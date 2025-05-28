@@ -53,3 +53,7 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 /SteamNewsletter/.vs
+/.vs/slnx.sqlite
+/.vs/VSWorkspaceState.json
+/SteamNewsletter/test/Program.cs
+/SteamNewsletter/test/test.csproj
