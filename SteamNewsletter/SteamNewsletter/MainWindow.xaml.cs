@@ -19,6 +19,10 @@ namespace SteamNewsletter
         public MainWindow()
         {
             InitializeComponent();
+            for (int i = 0; i < 100; i++)
+            {
+                CollectionListView.Items.Add(i);
+            }
         }
     }
 }

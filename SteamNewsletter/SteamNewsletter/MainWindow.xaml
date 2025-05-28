@@ -18,7 +18,7 @@
 
         <Button x:Name="ButtonMode" Grid.Column="0" Grid.Row="0" Content="Toggle" Width="100"/>
 
-        <ListView x:Name="ListViewNews" Grid.Column="0" Grid.Row="1" Margin="10">
+        <ListView x:Name="CollectionListView" Grid.Column="0" Grid.Row="1" Margin="10">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Title" Width="200" DisplayMemberBinding="{Binding Title}"/>
