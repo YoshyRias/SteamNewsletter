@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
@@ -10,7 +11,8 @@ namespace SteamNewsletterLib
 {
     public class GameCollection
     {
-        public List<Game> Games { get; set; } = new List<Game>();
+        [JsonPropertyName("appid")]
+        public int AppId { get; set; }
 
         // ChatGPT(Prompt): Wie kann ich herausfinden was für Spiele sich in der Bibliotek des Benutzers.
         // ChatGPT(Prompt): Was ist ein SteamApiKey
@@ -53,15 +55,11 @@ namespace SteamNewsletterLib
         {
             Games.Add(game);
         }
+        [JsonPropertyName("newsitems")]
+        public List<Game> Games { get; set; }
 
-        public void RemoveGame(Game game)
-        {
-            Games.Remove(game);
-        }
-
-        public void ClearGames()
-        {
-            Games.Clear();
-        }
+        [JsonPropertyName("count")]
+        public int Count { get; set; }
+        
     }
 }
