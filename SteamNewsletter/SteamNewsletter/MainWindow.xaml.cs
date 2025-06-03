@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -23,6 +25,19 @@ namespace SteamNewsletter
             {
                 CollectionListView.Items.Add(i);
             }
+        }
+
+        public class NewsFetcher
+        {
+            private static readonly HttpClient httpClient = new HttpClient();
+
+            /*
+            public async Task<Root> FetchNewsAsync(string apiUrl)
+            {
+                var json = await httpClient.GetStringAsync(apiUrl);
+                var result = JsonSerializer.Deserialize<Root>(json);
+                return result;
+            }*/
         }
     }
 }
