@@ -18,7 +18,7 @@ namespace SteamNewsletterLib
         // ChatGPT(Prompt): Was ist ein SteamApiKey
         // ChaGPT(Prompt): Was macht das: (string[] args)
 
-        static async Task LoadLibaryGames()s
+        static async Task LoadLibaryGames()
         {
             string steamApiKey = "";
             string steamId = "76561199385548855";

@@ -6,27 +6,7 @@
         xmlns:local="clr-namespace:SteamNewsletter"
         mc:Ignorable="d"
         Title="SteamNews ;D" Height="450" Width="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
 
-        <Button x:Name="ButtonMode" Grid.Column="0" Grid.Row="0" Content="Toggle" Width="100"/>
-
-        <ListView x:Name="CollectionListView" Grid.Column="0" Grid.Row="1" Margin="10">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Title" Width="200" DisplayMemberBinding="{Binding Title}"/>
-                    <GridViewColumn Header="Date" Width="120" DisplayMemberBinding="{Binding Date}"/>
-                    <GridViewColumn Header="Link" Width="200" DisplayMemberBinding="{Binding Link}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-
-    </Grid>
+    <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden">
+    </Frame>
 </Window>

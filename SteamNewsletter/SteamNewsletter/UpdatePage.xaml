@@ -1,0 +1,34 @@
+﻿<Page x:Class="SteamNewsletter.UpdatePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SteamNewsletter"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="UpdatePage">
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Button x:Name="ButtonMode" Grid.Column="0" Grid.Row="0" Content="Toggle" Width="100" Click="ButtonMode_Click"/>
+
+        <ListView x:Name="CollectionListView" Grid.Column="0" Grid.Row="1" Margin="10">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Title" Width="200" DisplayMemberBinding="{Binding Title}"/>
+                    <GridViewColumn Header="Date" Width="120" DisplayMemberBinding="{Binding Date}"/>
+                    <GridViewColumn Header="Link" Width="200" DisplayMemberBinding="{Binding Link}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Page>

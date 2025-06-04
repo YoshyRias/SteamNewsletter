@@ -21,23 +21,13 @@ namespace SteamNewsletter
         public MainWindow()
         {
             InitializeComponent();
-            for (int i = 0; i < 100; i++)
-            {
-                CollectionListView.Items.Add(i);
-            }
+            UpdatePage updatePage = new UpdatePage();
+            MainFrame.Navigate(updatePage);
+
+            NewReleasesPage newReleasesPage = new NewReleasesPage();
+            MainFrame.Navigate(newReleasesPage);
         }
 
-        public class NewsFetcher
-        {
-            private static readonly HttpClient httpClient = new HttpClient();
-
-            /*
-            public async Task<Root> FetchNewsAsync(string apiUrl)
-            {
-                var json = await httpClient.GetStringAsync(apiUrl);
-                var result = JsonSerializer.Deserialize<Root>(json);
-                return result;
-            }*/
-        }
+        
     }
 }
