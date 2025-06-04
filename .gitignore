@@ -57,3 +57,8 @@ nunit-*.xml
 /.vs/VSWorkspaceState.json
 /SteamNewsletter/test/Program.cs
 /SteamNewsletter/test/test.csproj
+/SteamNewsletter/test/App.xaml
+/SteamNewsletter/test/App.xaml.cs
+/SteamNewsletter/test/AssemblyInfo.cs
+/SteamNewsletter/test/MainWindow.xaml
+/SteamNewsletter/test/MainWindow.xaml.cs
