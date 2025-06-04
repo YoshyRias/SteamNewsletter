@@ -5,7 +5,9 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SteamNewsletter", "SteamNewsletter\SteamNewsletter.csproj", "{53993585-6C13-45E8-9407-6384321F7372}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamNewsletterLib", "SteamNewsletterLib\SteamNewsletterLib.csproj", "{458B5448-A873-477C-AE5F-22B33983645B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SteamNewsletterLib", "SteamNewsletterLib\SteamNewsletterLib.csproj", "{458B5448-A873-477C-AE5F-22B33983645B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\test.csproj", "{A22353E5-6801-46C4-BC5D-806C784B5FE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{458B5448-A873-477C-AE5F-22B33983645B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{458B5448-A873-477C-AE5F-22B33983645B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{458B5448-A873-477C-AE5F-22B33983645B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A22353E5-6801-46C4-BC5D-806C784B5FE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A22353E5-6801-46C4-BC5D-806C784B5FE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A22353E5-6801-46C4-BC5D-806C784B5FE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A22353E5-6801-46C4-BC5D-806C784B5FE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
