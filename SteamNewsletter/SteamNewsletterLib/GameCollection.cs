@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows;
 using Newtonsoft.Json.Linq;
 
 namespace SteamNewsletterLib
@@ -33,14 +36,24 @@ namespace SteamNewsletterLib
                 JObject data = JObject.Parse(json);
                 var games = data["response"]?["games"];
 
-                string[] GameDataArray = new string[games.Count()];
+                List<string> GameDataList = new List<string>();
 
                 if (games != null)
                 {
+                    ListView listView = new ListView
+                    {
+                        Width = 300,
+                        Height = 200,
+                        Margin = new Thickness(10)
+                    };
+                    
+                    
                     foreach (JObject game in games)
                     {
                         string GameData = ($"{game["name"]},{game["appid"]},{game["playtime_forever"]}");
                         Console.WriteLine(GameData);
+                        GameDataList.Add(GameData);
+                        listView.Items.Add(game["name"]);
                     }
                 }
                 else
@@ -50,7 +63,15 @@ namespace SteamNewsletterLib
             }
         }
 
+        private void CreateSteamNewsletterLib_APIkey(string path, int APIkey)
+        {
 
+            // How to make a massage box in c# with wpf
+            using (StreamWriter streamwriter = new StreamWriter(path))
+            {
+
+            }
+        }
         public void AddGame(Game game)
         {
             Games.Add(game);
