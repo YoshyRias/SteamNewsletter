@@ -21,13 +21,21 @@ namespace SteamNewsletter
         public MainWindow()
         {
             InitializeComponent();
-            UpdatePage updatePage = new UpdatePage();
-            MainFrame.Navigate(updatePage);
 
-            NewReleasesPage newReleasesPage = new NewReleasesPage();
-            MainFrame.Navigate(newReleasesPage);
+            int curPage = 1;
+
+            if (curPage == 0)
+            {
+                UpdatePage updatePage = new UpdatePage();
+                MainFrame.Navigate(updatePage);
+            }
+
+            else if (curPage == 1)
+            {
+                NewReleasesPage newReleasesPage = new NewReleasesPage();
+                MainFrame.Navigate(newReleasesPage);
+            }
         }
-
         
     }
 }
