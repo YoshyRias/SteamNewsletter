@@ -20,6 +20,9 @@ namespace SteamNewsletter
     {
         private int curPage = 1;
 
+        private UpdatePage updatePage;
+        private NewReleasesPage newReleasesPage;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -27,29 +30,29 @@ namespace SteamNewsletter
 
             if (curPage == 0)
             {
-                UpdatePage updatePage = new UpdatePage();
+                updatePage = new UpdatePage();
                 MainFrame.Navigate(updatePage);
             }
 
             else if (curPage == 1)
             {
-                NewReleasesPage newReleasesPage = new NewReleasesPage();
+                newReleasesPage = new NewReleasesPage();
                 MainFrame.Navigate(newReleasesPage);
             }
         }
 
         private void ButtonMode_Click(object sender, RoutedEventArgs e)
         {
-            if (curPage == 1)
+            if (curPage == 1 && !newReleasesPage.isRunning)
             {
-                UpdatePage updatePage = new UpdatePage();
+                updatePage = new UpdatePage();
                 MainFrame.Navigate(updatePage);
                 curPage = 0;
             }
 
-            else if (curPage == 0)
+            else if (curPage == 0 && !newReleasesPage.isRunning)
             {
-                NewReleasesPage newReleasesPage = new NewReleasesPage();
+                newReleasesPage = new NewReleasesPage();
                 MainFrame.Navigate(newReleasesPage);
                 curPage++;
             }
