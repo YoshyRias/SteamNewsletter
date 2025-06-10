@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SteamNewsletterLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -21,9 +22,12 @@ namespace SteamNewsletter
     /// </summary>
     public partial class UpdatePage : Page
     {
+        public GameCollection gameCollection = new GameCollection();
         public UpdatePage()
         {
             InitializeComponent();
+            
+            //gameCollection.LoadLibaryGames(Games_ListView);
         }
 
         public class NewsFetcher
@@ -43,6 +47,18 @@ namespace SteamNewsletter
         {
             //MainFrame.Navigate(new NewReleasesPage());
 
+        }
+
+        private void CollectionListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = CollectionListView.SelectedIndex;
+            gameCollection.DrawListview(index, Games_ListView);
+        }
+
+        private void Games_ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = Games_ListView.SelectedIndex;
+            gameCollection.GameCollectionsList[0][index].GetGameUpdates();
         }
     }
 }

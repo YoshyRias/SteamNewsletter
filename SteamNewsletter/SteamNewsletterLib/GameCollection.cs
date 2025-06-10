@@ -9,11 +9,21 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
 using Newtonsoft.Json.Linq;
+using System.Windows.Documents;
 
 namespace SteamNewsletterLib
 {
     public class GameCollection
     {
+
+        public List<List<Game>> GameCollectionsList = new List<List<Game>>();
+
+        public List<Game> LibaryGames = new List<Game>();
+        public List<Game> Games { get; set; }
+
+        [JsonPropertyName("count")]
+        public int Count { get; set; }
+
         [JsonPropertyName("appid")]
         public int AppId { get; set; }
 
@@ -21,8 +31,17 @@ namespace SteamNewsletterLib
         // ChatGPT(Prompt): Was ist ein SteamApiKey
         // ChaGPT(Prompt): Was macht das: (string[] args)
 
-        static async Task LoadLibaryGames()
+        public GameCollection() 
         {
+            GameCollectionsList.Add(LibaryGames);
+            LoadLibaryGames();
+            
+        }
+
+        public async Task LoadLibaryGames()
+        {
+            
+
             string steamApiKey = "";
             string steamId = "76561199385548855";
 
@@ -31,7 +50,7 @@ namespace SteamNewsletterLib
             using (HttpClient client = new HttpClient())
             {
                 HttpResponseMessage response = await client.GetAsync(url);
-                string json = await response.Content.ReadAsStringAsync();
+                 string json = await response.Content.ReadAsStringAsync();
 
                 JObject data = JObject.Parse(json);
                 var games = data["response"]?["games"];
@@ -40,26 +59,22 @@ namespace SteamNewsletterLib
 
                 if (games != null)
                 {
-                    ListView listView = new ListView
-                    {
-                        Width = 300,
-                        Height = 200,
-                        Margin = new Thickness(10)
-                    };
-                    
-                    
+
+
+
                     foreach (JObject game in games)
                     {
                         string GameData = ($"{game["name"]},{game["appid"]},{game["playtime_forever"]}");
-                        Console.WriteLine(GameData);
                         GameDataList.Add(GameData);
-                        listView.Items.Add(game["name"]);
+                        LibaryGames.Add(new Game(int.Parse(game["appid"].ToString()), game["name"].ToString()));
                     }
+                    
                 }
                 else
                 {
                     Console.WriteLine("No games found or the profile is private.");
                 }
+
             }
         }
 
@@ -74,13 +89,18 @@ namespace SteamNewsletterLib
         }
         public void AddGame(Game game)
         {
-            Games.Add(game);
+            //Games.Add(game);
         }
-        [JsonPropertyName("newsitems")]
-        public List<Game> Games { get; set; }
-
-        [JsonPropertyName("count")]
-        public int Count { get; set; }
+        public void DrawListview(int index, ListView listveiw)
+        {
+            List<Game> GameCollection = GameCollectionsList[index];
+            foreach (Game game in GameCollection)
+            {
+                listveiw.Items.Add(game.Name);
+            }
+        }
         
+
+
     }
 }

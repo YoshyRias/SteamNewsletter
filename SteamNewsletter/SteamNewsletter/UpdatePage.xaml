@@ -20,15 +20,14 @@
 
         <Button x:Name="ButtonMode" Grid.Column="0" Grid.Row="0" Content="Toggle" Width="100" Click="ButtonMode_Click"/>
 
-        <ListView x:Name="CollectionListView" Grid.Column="0" Grid.Row="1" Margin="10">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Title" Width="200" DisplayMemberBinding="{Binding Title}"/>
-                    <GridViewColumn Header="Date" Width="120" DisplayMemberBinding="{Binding Date}"/>
-                    <GridViewColumn Header="Link" Width="200" DisplayMemberBinding="{Binding Link}"/>
-                </GridView>
-            </ListView.View>
+        <ListView x:Name="CollectionListView" Grid.Column="0" Grid.Row="1" Margin="10" SelectionChanged="CollectionListView_SelectionChanged">
+            <ListViewItem Content="Steam Libary" ></ListViewItem>
         </ListView>
+        <ListView x:Name="Games_ListView" Grid.Column="1" Grid.Row="1" Margin="34,10,122,10" SelectionChanged="Games_ListView_SelectionChanged">
+           
+        </ListView>
+        <Label x:Name="UpdateTitle" Grid.Column="1" Content="Label" HorizontalAlignment="Left" Margin="338,64,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <Label x:Name="UpdateContent" Grid.Column="1" Content="Label" HorizontalAlignment="Left" Margin="338,122,0,0" Grid.Row="1" VerticalAlignment="Top"/>
 
     </Grid>
 </Page>

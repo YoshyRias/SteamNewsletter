@@ -22,7 +22,8 @@ namespace SteamNewsletter
         {
             InitializeComponent();
 
-            int curPage = 1;
+            int curPage = 0
+                ;
 
             if (curPage == 0)
             {

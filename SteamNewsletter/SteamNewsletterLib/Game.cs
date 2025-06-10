@@ -1,5 +1,8 @@
 
+using Newtonsoft.Json.Linq;
+using System.Net.Http;
 using System.Text.Json.Serialization;
+using System.Windows.Controls;
 
 namespace SteamNewsletterLib
 {
@@ -30,7 +33,7 @@ namespace SteamNewsletterLib
         public long Date { get; set; }
 
         [JsonPropertyName("feedname")]
-        public string FeedName { get; set; }
+        public string Name { get; set; }
 
         [JsonPropertyName("feed_type")]
         public int FeedType { get; set; }
@@ -40,5 +43,64 @@ namespace SteamNewsletterLib
 
         [JsonPropertyName("tags")]
         public List<string> Tags { get; set; }
+
+        public List<string> RecentUpdates { get; private set; }
+
+        public Game(int appID)
+        {
+            AppId = appID;
+        }
+        public Game(int appID, string name) : this(appID)
+        {
+            Name = name;
+        }
+
+
+        public void ShowUpdatLog()
+        {
+
+        }
+
+        // ChatGPT: How do I access the Update Logs of a Steam Game
+        // ChatGPT: what data type does json have
+        // ChatGPT: What is a JToken
+
+        public async Task GetGameUpdates()
+        {
+            string url = $"https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid={AppId}&count=5";
+
+            using (HttpClient client = new HttpClient())
+            {
+
+
+                var response = await client.GetStringAsync(url);
+                JObject json = JObject.Parse(response);
+
+                JToken newsItems = json["appnews"]?["newsitems"];
+                if (newsItems != null)
+                {
+                    foreach (JToken item in newsItems)
+                    {
+                        string title = item["title"]?.ToString();
+                        string contents = item["contents"]?.ToString();
+                        //string link = item["url"]?.ToString();
+
+                        RecentUpdates.Add($"Title: {title}\n{contents}\n");
+                    }
+                }
+            }
+
+
+        }
+
+        public void VisuallizeUpdates(Label UpdateTitle, Label UpdateContent)
+        {
+            GetGameUpdates();
+            UpdateTitle.Content = RecentUpdates[0];
+            UpdateContent.Content = RecentUpdates[0];
+        }
+
+
     }
+
 }
