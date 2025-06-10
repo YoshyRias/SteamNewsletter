@@ -23,14 +23,12 @@ namespace SteamNewsletterLib
         [JsonPropertyName("background_image")]
         public string BackgroundImage { get; set; }
 
+        [JsonPropertyName("rating")]
+        public double Rating { get; set; }
+
         // Developers are not part of the default /games list response.
-        // You need to query /games/{slug or id} to get detailed info.
         [JsonIgnore]
         public string Developer { get; set; }
 
-        public override string ToString()
-        {
-            return $"{Name} | {Released} | {Developer}";
-        }
     }
 }
