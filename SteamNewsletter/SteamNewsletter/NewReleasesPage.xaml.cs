@@ -38,7 +38,6 @@ namespace SteamNewsletter
                 .CreateLogger();
 
             rawgRoot = new RawgRoot(GridMain, ListViewReleases);
-            MessageBox.Show("Loading ... ");
             // As you cant execute async code in the constructor - the async part happens when the app is fully loaded (Loaded event)
             // Which here is async for that reason
             Loaded += NewReleasesPage_Loaded; 
@@ -60,7 +59,7 @@ namespace SteamNewsletter
             string curDateStartString = currentDate.ToString($"yyyy-{month:D2}-01"); // Format the date to a string in the format YYYY-MM-DD
             string curDateEndString = currentDate.ToString($"yyyy-{month+1:D2}-01");
 
-            string order = "rating";
+            string order = "-released";
             string page_size = "40"; // number of games
             string platforms = "4"; // ids (4 - PC, 187 - PS4, ...)
             string apiKey = "fdf840e885aa4fbb9aecd6b45d152b5a";
@@ -72,20 +71,18 @@ namespace SteamNewsletter
 
             string response = await httpClient.GetStringAsync($"{listUrl}&key={apiKey}");
             RawgRoot root = JsonSerializer.Deserialize<RawgRoot>(response); 
-            int counter = 0;
             foreach (var game in root.Results) 
             {
-                var detailResponse = await httpClient.GetStringAsync($"https://api.rawg.io/api/games/{game.Id}?key={apiKey}"); 
+                string detailResponse = await httpClient.GetStringAsync($"https://api.rawg.io/api/games/{game.Id}?key={apiKey}"); 
                 using var doc = JsonDocument.Parse(detailResponse);
-                counter++;
                 if (doc.RootElement.TryGetProperty("developers", out var developers) && developers.GetArrayLength() > 0)  
                 {
-                    game.Developer = developers[0].GetProperty("name").GetString() + counter;
+                    game.Developer = developers[0].GetProperty("name").GetString();
                     Log.Logger.Debug($"{game.Id} {game.Developer} - worked");
                 }
                 else
                 {
-                    game.Developer = "Unknown" + counter;
+                    game.Developer = "Unknown";
                     Log.Logger.Debug($"{game.Id} {game.Developer} - didnt work");
                 }
             }

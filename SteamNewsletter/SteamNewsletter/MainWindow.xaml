@@ -7,6 +7,13 @@
         mc:Ignorable="d"
         Title="SteamNews ;D" Height="450" Width="800">
 
-    <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden">
-    </Frame>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+        
+        <Button x:Name="ButtonMode" Grid.Column="0" Grid.Row="0" Content="Toggle" Width="100" Click="ButtonMode_Click"/>
+        <Frame Grid.Column="0" Grid.Row="1" x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+    </Grid>
 </Window>

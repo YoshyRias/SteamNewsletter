@@ -9,20 +9,15 @@
       Title="Up_nCominPage">
 
     <Grid Background="White" x:Name="GridMain">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="10*"/>
-        </Grid.RowDefinitions>
 
 
-        <Button x:Name="ButtonMode" Grid.Column="0" Grid.Row="0" Content="Toggle" Width="100"/>
         <ListView Grid.Row="1" x:Name="ListViewReleases">
             <ListView.View>
                 <GridView x:Name="GridViewReleases">
                     <GridViewColumn Header="Title" Width="200" DisplayMemberBinding="{Binding Name}" />
                     <GridViewColumn Header="Release Date" Width="120" DisplayMemberBinding="{Binding Released}"/>
-                    <GridViewColumn Header="Developer" Width="auto" DisplayMemberBinding="{Binding Developer}"/>
-                    <GridViewColumn Header="Rating" Width="auto" DisplayMemberBinding="{Binding Rating}"/>
+                    <GridViewColumn Header="Developer" Width="100" DisplayMemberBinding="{Binding Developer}"/>
+                    <GridViewColumn Header="Rating" Width="100" DisplayMemberBinding="{Binding Rating}"/>
                 </GridView>
             </ListView.View>
         </ListView>
