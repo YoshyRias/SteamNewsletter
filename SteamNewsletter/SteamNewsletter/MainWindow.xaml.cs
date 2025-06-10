@@ -18,25 +18,45 @@ namespace SteamNewsletter
     /// </summary>
     public partial class MainWindow : Window
     {
+        private int curPage = 1;
+
+        private UpdatePage updatePage;
+        private NewReleasesPage newReleasesPage;
+
         public MainWindow()
         {
             InitializeComponent();
 
-            int curPage = 0
-                ;
+            int curPage = 1;
 
             if (curPage == 0)
             {
-                UpdatePage updatePage = new UpdatePage();
+                updatePage = new UpdatePage();
                 MainFrame.Navigate(updatePage);
             }
 
             else if (curPage == 1)
             {
-                NewReleasesPage newReleasesPage = new NewReleasesPage();
+                newReleasesPage = new NewReleasesPage();
                 MainFrame.Navigate(newReleasesPage);
             }
         }
-        
+
+        private void ButtonMode_Click(object sender, RoutedEventArgs e)
+        {
+            if (curPage == 1 && !newReleasesPage.isRunning)
+            {
+                updatePage = new UpdatePage();
+                MainFrame.Navigate(updatePage);
+                curPage = 0;
+            }
+
+            else if (curPage == 0 && !newReleasesPage.isRunning)
+            {
+                newReleasesPage = new NewReleasesPage();
+                MainFrame.Navigate(newReleasesPage);
+                curPage++;
+            }
+        }
     }
 }

@@ -3,6 +3,7 @@ using Serilog.Core;
 using SteamNewsletterLib;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -25,21 +26,15 @@ namespace SteamNewsletter
     /// </summary>
     public partial class NewReleasesPage : Page
     {
-        private string apiKey = "fdf840e885aa4fbb9aecd6b45d152b5a";
-        private string listUrl = "https://api.rawg.io/api/games?dates=2025-06-01,2025-06-30&ordering=-added&page_size=20&platforms=4";
         private RawgRoot rawgRoot;
+        public bool isRunning = false;
 
         public NewReleasesPage()
         {
             InitializeComponent();
-
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug() // Set minimum log level to debug
-                .WriteTo.File("Newsletter.log", rollingInterval: RollingInterval.Month)
-                .CreateLogger();
+            isRunning = true;
 
             rawgRoot = new RawgRoot(GridMain, ListViewReleases);
-
             // As you cant execute async code in the constructor - the async part happens when the app is fully loaded (Loaded event)
             // Which here is async for that reason
             Loaded += NewReleasesPage_Loaded; 
@@ -48,44 +43,75 @@ namespace SteamNewsletter
         private async void NewReleasesPage_Loaded(object sender, RoutedEventArgs e)
         {
             Log.Logger.Debug("Loaded App succesfully");
-            rawgRoot.Results = await GameFetcher(listUrl, apiKey);
+
+            rawgRoot.Results = await GameFetcher();
             rawgRoot.UpdateListView();
+            isRunning = false;
+
+            LabelLoading.Visibility = Visibility.Collapsed;
+            ListViewReleases.Visibility = Visibility.Visible;
         }
 
-        // ChatGPT Propmt: How can
-        public async Task<List<RawgGame>> GameFetcher(string listUrl, string apiKey)
+        // ChatGPT Propmt: How can i Fetch the data from an API
+        public async Task<List<RawgGame>> GameFetcher()
         {
-            // Own comments on how the things work
+            DateTime currentDate = DateTime.Now; // Get the current date
+            // ChatGPT Prompt: Can you format my time to the start and end of the current month
+            DateTime startDate = new DateTime(currentDate.Year, currentDate.Month, 1);
+            DateTime endDate = startDate.AddMonths(1);
+            string curDateStartString = startDate.ToString("yyyy-MM-dd");
+            string curDateEndString = endDate.ToString("yyyy-MM-dd");
 
-            var httpClient = new HttpClient(); // To generally get the data
 
-            var response = await httpClient.GetStringAsync($"{listUrl}&key={apiKey}"); // Command to get the current trending games
-            var root = JsonSerializer.Deserialize<RawgRoot>(response); // Sort the received information in the class-properties
+            string order = "-released";
+            string page_size = "40"; // number of games
+            string platforms = "4"; // ids (4 - PC, 187 - PS4, ...)
+            string apiKey = "fdf840e885aa4fbb9aecd6b45d152b5a";
 
-            // Here starts the part to get the developers of the certain games aswell - as they aren't already included 
-            foreach (var game in root.Results) // Go through every Game we just got
+
+            string listUrl = $"https://api.rawg.io/api/games?dates={curDateStartString},{curDateEndString}&ordering={order}&page_size={page_size}&platforms={platforms}";
+
+            HttpClient httpClient = new HttpClient();
+
+            try
             {
-                // Every Game has its own information site - we go there to get the developers 
-                var detailResponse = await httpClient.GetStringAsync($"https://api.rawg.io/api/games/{game.Id}?key={apiKey}"); 
-                using var doc = JsonDocument.Parse(detailResponse); // This turns the raw json string into a good usable json structure
-                // This structure is simple to an array - in which you can access certain properties instead of indexes
+                string response = await httpClient.GetStringAsync($"{listUrl}&key={apiKey}");
+                RawgRoot root = JsonSerializer.Deserialize<RawgRoot>(response);
 
-                // This tries to acceses the "developers" part in the json "array" and looks if the array is functionall
-                if (doc.RootElement.TryGetProperty("developers", out var developers) && developers.GetArrayLength() > 0)  
+                var tasks = root.Results.Select(async game =>
                 {
-                    game.Developer = developers[0].GetProperty("name").GetString(); // Assign the developer-property in each game, when there is a developer found
-                    Log.Logger.Debug($"{game.Id} {game.Developer} - worked");
-                }
-                else
-                {
-                    game.Developer = "Unknown"; // Handle missing developers gracefully
-                    Log.Logger.Debug($"{game.Id} {game.Developer} - didnt work");
-                }
+                    try
+                    {
+                        string detailResponse = await httpClient.GetStringAsync($"https://api.rawg.io/api/games/{game.Id}?key={apiKey}");
+                        using var doc = JsonDocument.Parse(detailResponse);
+                        if (doc.RootElement.TryGetProperty("developers", out var developers) && developers.GetArrayLength() > 0)
+                        {
+                            game.Developer = developers[0].GetProperty("name").GetString();
+                        }
+                        else
+                        {
+                            game.Developer = "Unknown";
+                            Log.Logger.Debug($"{game.Id} {game.Developer} - not found");
+                        }
+                    }
+                    catch (Exception ex) 
+                    {
+                        game.Developer = "Unknown";
+                        Log.Logger.Error(ex, " - Loading Games Developers failed.");
+                    }
+                });
+                await Task.WhenAll(tasks);
 
+                Log.Logger.Debug("Loaded all Trending Games");
+                return root.Results;
             }
 
-            Log.Logger.Debug("Loaded all Trending Games");
-            return root.Results;
+            catch (Exception ex)
+            {
+                Log.Logger.Error(ex, " - Failed to Fetch Games from RAWG");
+                return new List<RawgGame>();
+            }
         }
+
     }
 }
