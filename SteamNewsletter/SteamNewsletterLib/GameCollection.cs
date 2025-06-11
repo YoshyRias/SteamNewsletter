@@ -42,7 +42,7 @@ namespace SteamNewsletterLib
         {
             
 
-            string steamApiKey = "36559A7E5433F8F6256DA87AE57D7795";
+            string steamApiKey = "";
             string steamId = "76561199385548855";
 
             string url = $"https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key={steamApiKey}&steamid={steamId}&include_appinfo=true&include_played_free_games=true";
