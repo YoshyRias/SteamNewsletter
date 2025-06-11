@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using System.Windows.Controls;
 
 namespace SteamNewsletterLib
@@ -44,7 +45,7 @@ namespace SteamNewsletterLib
         [JsonPropertyName("tags")]
         public List<string> Tags { get; set; }
 
-        public List<string> RecentUpdates { get; private set; }
+        public List<string> RecentUpdates = new List<string>();
 
         public Game(int appID)
         {
@@ -67,7 +68,7 @@ namespace SteamNewsletterLib
 
         public async Task GetGameUpdates()
         {
-            string url = $"https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid={AppId}&count=5";
+            string url = $"https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid={AppId}&count=1";
 
             using (HttpClient client = new HttpClient())
             {
@@ -83,21 +84,21 @@ namespace SteamNewsletterLib
                     {
                         string title = item["title"]?.ToString();
                         string contents = item["contents"]?.ToString();
+
                         //string link = item["url"]?.ToString();
 
-                        RecentUpdates.Add($"Title: {title}\n{contents}\n");
+                        RecentUpdates.Add($"Title: {Regex.Replace(title, "<.*?>", string.Empty)}\n{Regex.Replace(contents, "<.*?>", string.Empty)}\n");
                     }
                 }
             }
-
+            
 
         }
 
-        public void VisuallizeUpdates(Label UpdateTitle, Label UpdateContent)
+        public async Task VisuallizeUpdates(Label UpdateTitle)
         {
-            GetGameUpdates();
+            await GetGameUpdates();
             UpdateTitle.Content = RecentUpdates[0];
-            UpdateContent.Content = RecentUpdates[0];
         }
 
 

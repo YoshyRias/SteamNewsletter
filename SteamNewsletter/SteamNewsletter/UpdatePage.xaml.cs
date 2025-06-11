@@ -58,7 +58,7 @@ namespace SteamNewsletter
         private void Games_ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = Games_ListView.SelectedIndex;
-            gameCollection.GameCollectionsList[0][index].GetGameUpdates();
+            gameCollection.GameCollectionsList[0][index].VisuallizeUpdates(UpdateTitle);
         }
     }
 }
