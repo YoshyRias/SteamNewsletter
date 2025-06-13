@@ -9,18 +9,39 @@
       Title="Up_nCominPage">
 
     <Grid Background="White" x:Name="GridMain">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-        <Label x:Name="LabelLoading" Content="Loading..." FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0" Visibility="Visible"/>
+        <Label x:Name="LabelLoading" Grid.ColumnSpan="2" Content="Loading..." FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,0" Visibility="Visible"/>
 
-        <ListView x:Name="ListViewReleases" Visibility="Hidden">
+        <ListView x:Name="ListViewReleases">
             <ListView.View>
                 <GridView x:Name="GridViewReleases">
                     <GridViewColumn Header="Title" Width="200" DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn Header="Release Date" Width="120" DisplayMemberBinding="{Binding Released}"/>
-                    <GridViewColumn Header="Developer" Width="100" DisplayMemberBinding="{Binding Developer}"/>
-                    <GridViewColumn Header="Rating" Width="100" DisplayMemberBinding="{Binding Rating}"/>
+                    <GridViewColumn Header="Release Date" Width="100" DisplayMemberBinding="{Binding Released}"/>
+                    <GridViewColumn Header="Developer" Width="200" DisplayMemberBinding="{Binding Developer}"/>
                 </GridView>
             </ListView.View>
         </ListView>
+        <StackPanel x:Name="StackPanelFilters" Grid.Column="1" Margin="10">
+            <ComboBox x:Name="ComboBoxPlatforms" Margin="10">
+                <ComboBoxItem Content="PC" IsSelected="True"/>
+                <ComboBoxItem Content="PS4" />
+                <ComboBoxItem Content="PS5" />
+                <ComboBoxItem Content="Xbox One" />
+                <ComboBoxItem Content="Xbox Series X" />
+                <ComboBoxItem Content="Nintendo Switch" />
+            </ComboBox>
+
+            <Label Content="Start Date:" Margin="10 5 0 0"/>
+            <DatePicker x:Name="DatePickerStart" Margin="10 5"/>
+            <Label Content="End Date:" Margin="10 5 0 0"/>
+            <DatePicker x:Name="DatePickerEnd" Margin="10 5"/>
+
+            <Button Content="⟳" x:Name="ButtonRefresh" Margin="10 20" Click="ButtonRefresh_Click"/>
+
+        </StackPanel>
     </Grid>
 </Page>
