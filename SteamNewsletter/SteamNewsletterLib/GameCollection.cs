@@ -42,7 +42,7 @@ namespace SteamNewsletterLib
         {
             
 
-            string steamApiKey = "";
+            string steamApiKey = " 4D0FCCEF5CFE6F8645EA0E17E5F6CB37";
             string steamId = "76561199385548855";
 
             string url = $"https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key={steamApiKey}&steamid={steamId}&include_appinfo=true&include_played_free_games=true";
@@ -50,7 +50,7 @@ namespace SteamNewsletterLib
             using (HttpClient client = new HttpClient())
             {
                 HttpResponseMessage response = await client.GetAsync(url);
-                 string json = await response.Content.ReadAsStringAsync();
+                string json = await response.Content.ReadAsStringAsync();
 
                 JObject data = JObject.Parse(json);
                 var games = data["response"]?["games"];

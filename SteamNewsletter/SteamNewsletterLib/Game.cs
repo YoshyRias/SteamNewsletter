@@ -99,6 +99,7 @@ namespace SteamNewsletterLib
         {
             await GetGameUpdates();
             UpdateTitle.Content = RecentUpdates[0];
+
         }
 
 
