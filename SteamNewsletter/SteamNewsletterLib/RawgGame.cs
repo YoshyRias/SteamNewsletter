@@ -30,5 +30,8 @@ namespace SteamNewsletterLib
         [JsonIgnore]
         public string Developer { get; set; }
 
+        [JsonIgnore]
+        public int Number {  get; set; }
+
     }
 }

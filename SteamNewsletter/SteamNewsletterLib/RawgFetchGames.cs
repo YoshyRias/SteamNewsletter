@@ -14,10 +14,8 @@ namespace SteamNewsletterLib
     {
         public RawgFetchGames() { }
 
-        public static async Task<List<RawgGame>> GameFetcher()
+        public static async Task<List<RawgGame>> GameFetcher(RawgFilters filters)
         {
-            RawgFilters filters = new RawgFilters();
-
             string listUrl = 
                 $"https://api.rawg.io/api/games?" +
                 $"dates={filters.curDateStartString},{filters.curDateEndString}" +
@@ -27,6 +25,7 @@ namespace SteamNewsletterLib
                 $"&key={filters.apiKey}";
 
             HttpClient httpClient = new HttpClient();
+            int counter = 0;
 
             try
             {
@@ -42,6 +41,8 @@ namespace SteamNewsletterLib
 
                 var tasks = root.Results.Select(async game =>
                 {
+                    counter++;
+                    game.Number = counter;
                     try
                     {
                         string detailResponse = await httpClient.GetStringAsync($"https://api.rawg.io/api/games/{game.Id}?key={filters.apiKey}");

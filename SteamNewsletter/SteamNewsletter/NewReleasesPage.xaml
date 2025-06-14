@@ -19,27 +19,42 @@
         <ListView x:Name="ListViewReleases">
             <ListView.View>
                 <GridView x:Name="GridViewReleases">
-                    <GridViewColumn Header="Title" Width="200" DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn Header="Release Date" Width="100" DisplayMemberBinding="{Binding Released}"/>
+                    <GridViewColumn Header="Number" Width="50" DisplayMemberBinding="{Binding Number}"/>
+                    <GridViewColumn Header="Title" Width="250" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Release Date" Width="80" DisplayMemberBinding="{Binding Released}"/>
                     <GridViewColumn Header="Developer" Width="200" DisplayMemberBinding="{Binding Developer}"/>
                 </GridView>
             </ListView.View>
         </ListView>
         <StackPanel x:Name="StackPanelFilters" Grid.Column="1" Margin="10">
-            <ComboBox x:Name="ComboBoxPlatforms" Margin="10">
-                <ComboBoxItem Content="PC" IsSelected="True"/>
-                <ComboBoxItem Content="PS4" />
-                <ComboBoxItem Content="PS5" />
-                <ComboBoxItem Content="Xbox One" />
-                <ComboBoxItem Content="Xbox Series X" />
-                <ComboBoxItem Content="Nintendo Switch" />
+            <ComboBox x:Name="ComboBoxPlatforms" Margin="10" SelectionChanged="ComboBoxPlatforms_SelectionChanged">
+                <ComboBoxItem Content="All" Tag="all"/>
+                <ComboBoxItem Content="PC" Tag="4" IsSelected="True"/>
+                <ComboBoxItem Content="PS4" Tag="18"/>
+                <ComboBoxItem Content="PS5" Tag="187"/>
+                <ComboBoxItem Content="Xbox One" Tag="1"/>
+                <ComboBoxItem Content="Xbox Series X" Tag="186"/>
+                <ComboBoxItem Content="Nintendo Switch" Tag="7"/>
             </ComboBox>
 
             <Label Content="Start Date:" Margin="10 5 0 0"/>
-            <DatePicker x:Name="DatePickerStart" Margin="10 5"/>
-            <Label Content="End Date:" Margin="10 5 0 0"/>
-            <DatePicker x:Name="DatePickerEnd" Margin="10 5"/>
+            <DatePicker x:Name="DatePickerStart" Margin="10 5" SelectedDateChanged="DatePickerStart_SelectedDateChanged"/>
+            <Label Content="End Date:" Margin="10 5 0 0" />
+            <DatePicker x:Name="DatePickerEnd" Margin="10 5" SelectedDateChanged="DatePickerEnd_SelectedDateChanged"/>
 
+            <Label Content="Number of games" Margin="10 5 0 0"/>
+            <Grid Margin="10 5 10 0" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <Label x:Name="LabelGameCount" Content="40" HorizontalAlignment="Center" Grid.Column="1" />
+                <Slider x:Name="SliderGameCount" Minimum="1" Maximum="100" Value="40" TickFrequency="1" IsSnapToTickEnabled="True" VerticalAlignment="Center" ValueChanged="SliderGameCount_ValueChanged"/>
+            </Grid>
+
+            
+            
             <Button Content="⟳" x:Name="ButtonRefresh" Margin="10 20" Click="ButtonRefresh_Click"/>
 
         </StackPanel>

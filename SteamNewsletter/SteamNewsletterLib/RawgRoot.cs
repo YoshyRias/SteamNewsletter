@@ -28,7 +28,6 @@ namespace SteamNewsletterLib
 
         public void UpdateListView()
         {
-            listView.Items.Clear();
             listView.ItemsSource = Results;
         }
 
