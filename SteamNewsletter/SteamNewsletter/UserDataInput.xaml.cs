@@ -24,9 +24,12 @@ namespace SteamNewsletter
         public string SteamApiKey {  get; set; }
 
         public string SteamId { get; set; }
+
+
         public UserDataInput()
         {
             InitializeComponent();
+            
         }
 
         private async void ConfirmButton_Click(object sender, RoutedEventArgs e)
@@ -77,6 +80,12 @@ namespace SteamNewsletter
             }
 
 
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ApiKeyTextBox.Text = SteamApiKey;
+            SteamIDTextBox.Text = SteamId;
         }
     }
 }

@@ -18,8 +18,6 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Button x:Name="ButtonMode" Grid.Column="0" Grid.Row="0" Content="Toggle" Width="100" Click="ButtonMode_Click"/>
-
         <ListView x:Name="CollectionListView" Width="200" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1" Margin="10" SelectionChanged="CollectionListView_SelectionChanged">
             <ListViewItem Content="Steam Libary" ></ListViewItem>
         </ListView>

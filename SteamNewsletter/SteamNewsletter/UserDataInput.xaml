@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SteamNewsletter"
         mc:Ignorable="d"
-        Title="UserDataInput" Height="200" Width="200">
+        Title="UserDataInput" Height="220" Width="200"
+        Loaded="Window_Loaded">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>

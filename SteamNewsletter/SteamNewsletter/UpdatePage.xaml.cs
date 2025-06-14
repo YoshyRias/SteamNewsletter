@@ -26,7 +26,7 @@ namespace SteamNewsletter
         public UpdatePage()
         {
             InitializeComponent();
-            
+            ApiKey_SteamId_Inputwindow();
             //gameCollection.LoadLibaryGames(Games_ListView);
         }
 
@@ -55,10 +55,23 @@ namespace SteamNewsletter
             gameCollection.DrawListview(index, Games_ListView);
         }
 
-        private void Games_ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Games_ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = Games_ListView.SelectedIndex;
-            gameCollection.GameCollectionsList[0][index].VisuallizeUpdates(UpdateTitle);
+            await gameCollection.GameCollectionsList[0][index].VisuallizeUpdates(UpdateTitle);
+        }
+
+        private void ApiKey_SteamId_Inputwindow()
+        {
+            UserDataInput userdataInput = new UserDataInput();
+            userdataInput.SteamApiKey = gameCollection.SteamApiKey;
+            userdataInput.SteamId = gameCollection.SteamId;
+
+            if (userdataInput.ShowDialog() == true)
+            {
+                gameCollection.SteamId = userdataInput.SteamId;
+                gameCollection.SteamApiKey = userdataInput.SteamApiKey;
+            }
         }
     }
 }

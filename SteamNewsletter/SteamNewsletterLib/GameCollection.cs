@@ -21,10 +21,11 @@ namespace SteamNewsletterLib
         public List<Game> LibaryGames = new List<Game>();
         public List<Game> Games { get; set; }
 
-        [JsonPropertyName("count")]
+        public string SteamApiKey { get; set; }
+        public string SteamId { get; set; }
+
         public int Count { get; set; }
 
-        [JsonPropertyName("appid")]
         public int AppId { get; set; }
 
         // ChatGPT(Prompt): Wie kann ich herausfinden was für Spiele sich in der Bibliotek des Benutzers.
@@ -40,12 +41,8 @@ namespace SteamNewsletterLib
 
         public async Task LoadLibaryGames()
         {
-            
 
-            string steamApiKey = " 4D0FCCEF5CFE6F8645EA0E17E5F6CB37";
-            string steamId = "76561199385548855";
-
-            string url = $"https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key={steamApiKey}&steamid={steamId}&include_appinfo=true&include_played_free_games=true";
+            string url = $"https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key={SteamApiKey}&steamid={SteamId}&include_appinfo=true&include_played_free_games=true";
 
             using (HttpClient client = new HttpClient())
             {
