@@ -13,6 +13,7 @@ namespace SteamNewsletterLib
         public string curDateEndString { get; set;}
         public string order { get; set; } 
         public string page_size { get; set; } 
+        public string pages {  get; set; }
         public string platforms { get; set; } 
         public string apiKey { get; set; } 
 
@@ -28,16 +29,15 @@ namespace SteamNewsletterLib
 
             order = "-rating";
             page_size = "40";
+            pages = "1";
             platforms = "4";
             apiKey = "fdf840e885aa4fbb9aecd6b45d152b5a";
         }
 
-        public RawgFilters(string order, string page_size, string platforms, string apiKey) : this()
+
+        public override string ToString()
         {
-            this.order = order;
-            this.page_size = page_size;
-            this.platforms = platforms;
-            this.apiKey = apiKey;
+            return $"Filter Debug: {page_size} {pages} {platforms} {curDateStartString} {curDateEndString}";
         }
     }
 }

@@ -60,6 +60,7 @@ namespace SteamNewsletter
             isRunning = true;
             ShowLoading(isRunning);
 
+            Log.Logger.Debug(rawgFilters.ToString());
             rawgRoot.Results = await RawgFetchGames.GameFetcher(rawgFilters);
             rawgRoot.UpdateListView();
 
@@ -124,13 +125,27 @@ namespace SteamNewsletter
 
         private async void ButtonRefresh_Click(object sender, RoutedEventArgs e)
         {
-
             LoadGames();
         }
 
         private void SliderGameCount_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            LabelGameCount.Content = SliderGameCount.Value;
+            double gameCount = SliderGameCount.Value;
+            LabelGameCount.Content = gameCount;
+            if (gameCount <= 40)
+            {
+                rawgFilters.page_size = gameCount.ToString();
+                rawgFilters.pages = "1";
+            }
+
+            else
+            {
+                double pages = Math.Ceiling(gameCount / 40);
+                double page_size = gameCount / pages;
+                rawgFilters.page_size = page_size.ToString();
+                rawgFilters.pages = pages.ToString();
+            }
+
         }
     }
 }
