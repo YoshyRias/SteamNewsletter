@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -29,10 +30,17 @@ namespace SteamNewsletter
         private RawgRoot rawgRoot;
         public bool isRunning = false;
 
+        private RawgFilters rawgFilters = new();
+
         public NewReleasesPage()
         {
             InitializeComponent();
             isRunning = true;
+
+            // ChatGPT Prompt: short way to make it the first day of cur month
+            DateTime now = DateTime.Now;
+            DatePickerStart.SelectedDate = new DateTime(now.Year, now.Month, 1);
+            DatePickerEnd.SelectedDate = new DateTime(now.Year, now.Month, 1).AddMonths(1);
 
             rawgRoot = new RawgRoot(GridMain, ListViewReleases);
             // As you cant execute async code in the constructor - the async part happens when the app is fully loaded (Loaded event)
@@ -43,75 +51,101 @@ namespace SteamNewsletter
         private async void NewReleasesPage_Loaded(object sender, RoutedEventArgs e)
         {
             Log.Logger.Debug("Loaded App succesfully");
-
-            rawgRoot.Results = await GameFetcher();
-            rawgRoot.UpdateListView();
-            isRunning = false;
-
-            LabelLoading.Visibility = Visibility.Collapsed;
-            ListViewReleases.Visibility = Visibility.Visible;
+            LoadGames();
         }
 
-        // ChatGPT Propmt: How can i Fetch the data from an API
-        public async Task<List<RawgGame>> GameFetcher()
+
+        private async void LoadGames()
         {
-            DateTime currentDate = DateTime.Now; // Get the current date
-            // ChatGPT Prompt: Can you format my time to the start and end of the current month
-            DateTime startDate = new DateTime(currentDate.Year, currentDate.Month, 1);
-            DateTime endDate = startDate.AddMonths(1);
-            string curDateStartString = startDate.ToString("yyyy-MM-dd");
-            string curDateEndString = endDate.ToString("yyyy-MM-dd");
+            isRunning = true;
+            ShowLoading(isRunning);
+
+            Log.Logger.Debug(rawgFilters.ToString());
+            rawgRoot.Results = await RawgFetchGames.GameFetcher(rawgFilters);
+            rawgRoot.UpdateListView();
+
+            isRunning = false;
+            ShowLoading(isRunning);
+        }
+        // ChatGPT Prompt: Toggle Method for visibility
+        private void ShowLoading(bool isLoading)
+        {
+            LabelLoading.Visibility = isLoading ? Visibility.Visible : Visibility.Collapsed;
+            ListViewReleases.Visibility = isLoading ? Visibility.Collapsed : Visibility.Visible;
+            StackPanelFilters.Visibility = isLoading ? Visibility.Collapsed : Visibility.Visible;
+        }
 
 
-            string order = "-released";
-            string page_size = "40"; // number of games
-            string platforms = "4"; // ids (4 - PC, 187 - PS4, ...)
-            string apiKey = "fdf840e885aa4fbb9aecd6b45d152b5a";
 
+        private void ComboBoxPlatforms_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ComboBoxPlatforms.SelectedIndex == 0) rawgFilters.platforms = "1,4,7,18,186,187"; // IDs of all platforms
 
-            string listUrl = $"https://api.rawg.io/api/games?dates={curDateStartString},{curDateEndString}&ordering={order}&page_size={page_size}&platforms={platforms}";
-
-            HttpClient httpClient = new HttpClient();
-
-            try
+            else
             {
-                string response = await httpClient.GetStringAsync($"{listUrl}&key={apiKey}");
-                RawgRoot root = JsonSerializer.Deserialize<RawgRoot>(response);
-
-                var tasks = root.Results.Select(async game =>
-                {
-                    try
-                    {
-                        string detailResponse = await httpClient.GetStringAsync($"https://api.rawg.io/api/games/{game.Id}?key={apiKey}");
-                        using var doc = JsonDocument.Parse(detailResponse);
-                        if (doc.RootElement.TryGetProperty("developers", out var developers) && developers.GetArrayLength() > 0)
-                        {
-                            game.Developer = developers[0].GetProperty("name").GetString();
-                        }
-                        else
-                        {
-                            game.Developer = "Unknown";
-                            Log.Logger.Debug($"{game.Id} {game.Developer} - not found");
-                        }
-                    }
-                    catch (Exception ex) 
-                    {
-                        game.Developer = "Unknown";
-                        Log.Logger.Error(ex, " - Loading Games Developers failed.");
-                    }
-                });
-                await Task.WhenAll(tasks);
-
-                Log.Logger.Debug("Loaded all Trending Games");
-                return root.Results;
-            }
-
-            catch (Exception ex)
-            {
-                Log.Logger.Error(ex, " - Failed to Fetch Games from RAWG");
-                return new List<RawgGame>();
+                // ChatGPT Prompt: How can I get the Tag of the selected item
+                ComboBoxItem selectedItem = ComboBoxPlatforms.SelectedItem as ComboBoxItem;
+                rawgFilters.platforms = selectedItem.Tag.ToString();
             }
         }
 
+        private void DatePickerStart_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // ChatGPT Prompt: How to format the time from the Datepicker 
+            if (DatePickerStart.SelectedDate != null)
+            {
+                DateTime start = DatePickerStart.SelectedDate.Value;
+
+                rawgFilters.curDateStartString = start.ToString("yyyy-MM-dd");
+
+                if (DatePickerEnd.SelectedDate == null || DatePickerEnd.SelectedDate < start)
+                {
+                    DatePickerEnd.SelectedDate = start;
+                    rawgFilters.curDateEndString = start.ToString("yyyy-MM-dd");
+                }
+            }
+        
+        }
+
+        private void DatePickerEnd_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DatePickerEnd.SelectedDate != null)
+            {
+                DateTime end = DatePickerEnd.SelectedDate.Value;
+
+                rawgFilters.curDateEndString = end.ToString("yyyy-MM-dd");
+
+                if (DatePickerStart.SelectedDate == null || DatePickerStart.SelectedDate > end)
+                {
+                    DatePickerStart.SelectedDate = end;
+                    rawgFilters.curDateStartString = end.ToString("yyyy-MM-dd");
+                }
+            }
+        }
+
+        private async void ButtonRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            LoadGames();
+        }
+
+        private void SliderGameCount_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            double gameCount = SliderGameCount.Value;
+            LabelGameCount.Content = gameCount;
+            if (gameCount <= 40)
+            {
+                rawgFilters.page_size = gameCount.ToString();
+                rawgFilters.pages = "1";
+            }
+
+            else
+            {
+                double pages = Math.Ceiling(gameCount / 40);
+                double page_size = gameCount / pages;
+                rawgFilters.page_size = page_size.ToString();
+                rawgFilters.pages = pages.ToString();
+            }
+
+        }
     }
 }
