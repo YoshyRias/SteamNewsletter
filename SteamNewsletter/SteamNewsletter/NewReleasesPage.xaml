@@ -42,19 +42,6 @@
             <Label Content="End Date:" Margin="10 5 0 0" />
             <DatePicker x:Name="DatePickerEnd" Margin="10 5" SelectedDateChanged="DatePickerEnd_SelectedDateChanged"/>
 
-            <Label Content="Number of games" Margin="10 5 0 0"/>
-            <Grid Margin="10 5 10 0" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                
-                <Label x:Name="LabelGameCount" Content="40" HorizontalAlignment="Center" Grid.Column="1" />
-                <Slider x:Name="SliderGameCount" Minimum="2" Maximum="100" Value="40" TickFrequency="2" IsSnapToTickEnabled="True" VerticalAlignment="Center" ValueChanged="SliderGameCount_ValueChanged"/>
-            </Grid>
-
-            
-            
             <Button Content="⟳" x:Name="ButtonRefresh" Margin="10 20" Click="ButtonRefresh_Click"/>
 
         </StackPanel>

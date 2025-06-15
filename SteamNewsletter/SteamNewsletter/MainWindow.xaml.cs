@@ -18,7 +18,7 @@ namespace SteamNewsletter
     /// </summary>
     public partial class MainWindow : Window
     {
-        private int curPage = 0;
+        private int curPage = 1;
 
         private UpdatePage updatePage;
         private NewReleasesPage newReleasesPage;
@@ -26,8 +26,6 @@ namespace SteamNewsletter
         public MainWindow()
         {
             InitializeComponent();
-
-            int curPage = 0;
 
             if (curPage == 0)
             {
