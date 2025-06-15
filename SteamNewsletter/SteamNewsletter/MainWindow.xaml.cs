@@ -18,7 +18,7 @@ namespace SteamNewsletter
     /// </summary>
     public partial class MainWindow : Window
     {
-        private int curPage = 1;
+        private int curPage = 0;
 
         private UpdatePage updatePage;
         private NewReleasesPage newReleasesPage;
@@ -27,7 +27,7 @@ namespace SteamNewsletter
         {
             InitializeComponent();
 
-            int curPage = 1;
+            int curPage = 0;
 
             if (curPage == 0)
             {
@@ -51,7 +51,7 @@ namespace SteamNewsletter
                 curPage = 0;
             }
 
-            else if (curPage == 0 && !newReleasesPage.isRunning)
+            else if (curPage == 0)
             {
                 newReleasesPage = new NewReleasesPage();
                 MainFrame.Navigate(newReleasesPage);

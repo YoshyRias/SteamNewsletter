@@ -63,10 +63,10 @@
         
 
         <TextBox x:Name="ApiKeyTextBox" Text="" Grid.Row="1" Grid.Column="1"   
-                 HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="60"/>
+                 HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="60" TextChanged="ApiKeyTextBox_TextChanged"/>
         
         <TextBox x:Name="SteamIDTextBox" Text="" Grid.Row="2" Grid.Column="1"  
-                 HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="60"/>
+                 HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="60" TextChanged="SteamIDTextBox_TextChanged"/>
       
         
         

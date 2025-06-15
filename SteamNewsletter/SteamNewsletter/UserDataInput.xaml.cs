@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,18 +27,22 @@ namespace SteamNewsletter
 
         public string SteamId { get; set; }
 
+        private(bool SteamApiKeyValid, bool SteamIdValid) UserInfoValid { get;  set; }
+
 
         public UserDataInput()
         {
             InitializeComponent();
-            
         }
 
-        private async void ConfirmButton_Click(object sender, RoutedEventArgs e)
+        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            var (ApiKeyValid, SteamIdValid) = await IsSteam_Apikey_ID_Valid();
-            DialogResult = true;
+            if (UserInfoValid.SteamApiKeyValid == true && UserInfoValid.SteamIdValid == true)
+            {
+                DialogResult = true;
+            }
         }
+
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
@@ -56,27 +62,28 @@ namespace SteamNewsletter
         // ChatGPT: Gibt es eine Steam Test ID
         // ChatGPT: Wie returnt man daten mit einem async task
         // ChatGPT: Is there a simple way to check if a Steam id is valid
-        public async Task<(bool ApiKeyValid, bool SteamIdValid)> IsSteam_Apikey_ID_Valid()
+        public async Task IsSteam_Apikey_ID_Valid()
         {
-            string steamId = "76561197960435530"; // Steam Test ID
+            //string SteamTestId = "76561197960435530"; // Steam Test ID
 
-            string url = $"https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key={SteamApiKey}&steamids={steamId}";
+            
+            string url = $"https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key={SteamApiKey}&steamids={SteamId}";
+            
 
             using HttpClient client = new HttpClient();
             try
             {
                 var response = await client.GetAsync(url);
-                string result = await client.GetStringAsync(url);
+                response.EnsureSuccessStatusCode();
                 string content = await response.Content.ReadAsStringAsync();
-
                 bool steamIdValid = !content.Contains("\"players\":[]");
 
-                return (true, steamIdValid);
+                UserInfoValid = (true, steamIdValid);
 
             }
             catch (HttpRequestException e)
             {
-                return (false, false);
+                UserInfoValid = (false, false);
             }
 
 
@@ -86,6 +93,37 @@ namespace SteamNewsletter
         {
             ApiKeyTextBox.Text = SteamApiKey;
             SteamIDTextBox.Text = SteamId;
+        }
+
+        private async void ApiKeyTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SteamApiKey = ApiKeyTextBox.Text;
+            await IsSteam_Apikey_ID_Valid();
+            if (UserInfoValid.SteamApiKeyValid)
+            {
+                ApiKeyTextBox.Background = Brushes.DarkSeaGreen;
+            }
+            else
+            {
+                ApiKeyTextBox.Background = Brushes.IndianRed;
+            }
+
+        }
+
+        private async void SteamIDTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SteamId = SteamIDTextBox.Text;
+            await IsSteam_Apikey_ID_Valid();
+
+            if (UserInfoValid.SteamIdValid)
+            {
+
+                SteamIDTextBox.Background = Brushes.DarkSeaGreen;
+            }
+            else
+            {
+                SteamIDTextBox.Background = Brushes.IndianRed;
+            }
         }
     }
 }

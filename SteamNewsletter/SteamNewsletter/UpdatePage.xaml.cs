@@ -73,5 +73,10 @@ namespace SteamNewsletter
                 gameCollection.SteamApiKey = userdataInput.SteamApiKey;
             }
         }
+
+        private void ChangeUserInput_Click(object sender, RoutedEventArgs e)
+        {
+            ApiKey_SteamId_Inputwindow();
+        }
     }
 }
