@@ -44,8 +44,8 @@ namespace SteamNewsletter
             GameTitle.Text = game.Name;
             GameDescription.Text = game.DescriptionRaw;
             // ChatGPT Prompt: How can i show a list nicely in a textblock
-            GameGenres.Text = string.Join(", ", game.Genres);
-            GamePlatforms.Text = string.Join(", ", game.Platforms);
+            GameGenres.Text = $"Genres: {string.Join(", ", game.Genres)}";
+            GamePlatforms.Text = $"Platforms: {string.Join(", ", game.Platforms)}";
         }
 
         private void OpenWebsiteButton_Click(object sender, RoutedEventArgs e)
