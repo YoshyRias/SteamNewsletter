@@ -31,7 +31,19 @@ namespace SteamNewsletterLib
         public string Developer { get; set; }
 
         [JsonIgnore]
-        public int Number {  get; set; }
+        public string DescriptionRaw { get; set; }
+
+        [JsonIgnore]
+        public string Website { get; set; }
+
+        [JsonIgnore]
+        public List<string> Genres { get; set; }
+
+        [JsonIgnore]
+        public List<string> Platforms { get; set; }
+
+        [JsonIgnore]
+        public int Number { get; set; }
 
     }
 }

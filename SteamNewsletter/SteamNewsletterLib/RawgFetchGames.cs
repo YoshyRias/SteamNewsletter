@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -83,5 +84,45 @@ namespace SteamNewsletterLib
             }
         }
 
+        public static async Task FetchGameDetails(RawgGame game, string apiKey)
+        {
+            HttpClient client = new HttpClient();
+            string url = $"https://api.rawg.io/api/games/{game.Id}?key={apiKey}";
+
+            try
+            {
+                string detailsJson = await client.GetStringAsync(url);
+                using JsonDocument doc = JsonDocument.Parse(detailsJson);
+                var root = doc.RootElement;
+
+                game.DescriptionRaw = root.GetProperty("description_raw").GetString();
+                game.Website = root.GetProperty("website").GetString();
+
+                
+                if (root.TryGetProperty("genres", out JsonElement genres))
+                {
+                    game.Genres = new List<string>();
+                    foreach (JsonElement genresObj in genres.EnumerateArray())
+                    {
+                        game.Genres.Add(genresObj.GetProperty("name").GetString());  
+                    }
+                }
+
+                if (root.TryGetProperty("platforms", out var platforms))
+                {
+                    game.Platforms = new List<string>();
+                    foreach (JsonElement platformsObj in platforms.EnumerateArray())
+                    {
+                        JsonElement platform = platformsObj.GetProperty("platform");
+                        game.Platforms.Add(platform.GetProperty("name").GetString());
+                    }
+                }
+            }
+
+            catch (Exception e)
+            {
+                Log.Logger.Error(e + " - Fetching Game details failed");
+            }
+        }
     }
 }

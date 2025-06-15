@@ -147,5 +147,15 @@ namespace SteamNewsletter
             }
 
         }
+
+        private void ListViewReleases_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            RawgGame selectedGame = ListViewReleases.SelectedItem as RawgGame;
+            if (selectedGame != null)
+            {
+                GameDetailWindow window = new GameDetailWindow(selectedGame, rawgFilters.apiKey);
+                window.ShowDialog();
+            }
+        }
     }
 }
