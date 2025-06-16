@@ -37,10 +37,26 @@ foreach (var game in selectedGames)
     }
 }
 ```
+## Inhaltsverzeichnis
 
+- [1. Projektzeitplan](#1-projektzeitplan)
+- [2. Lastenheft](#2-lastenheft)
+  - [2.1 Kurzbeschreibung](#21-kurzbeschreibung)
+  - [2.2 Skizzen](#22-skizzen)
+  - [2.3 Funktionsumfang](#23-funktionsumfang)
+- [3. Pflichtenheft](#3-pflichtenheft)
+  - [3.1 Interner Programmaufbau (Programmlogik)](#31-interner-programmaufbau-programmlogik)
+  - [3.2 Umsetzungsdetails](#32-umsetzungsdetails)
+  - [3.3 Ergebnisse, Interpretation (Tests)](#33-ergebnisse-interpretation-tests)
+- [4. Anleitung](#4-anleitung)
+  - [4.1 Installationsanleitung](#41-installationsanleitung)
+  - [4.2 Bedienungsanleitung](#42-bedienungsanleitung)
+- [5. Bekannte Bugs, Probleme](#5-bekannte-bugs-probleme)
+- [6. Erweiterungsmöglichkeiten](#6-erweiterungsmöglichkeiten)
+- [7. Repository](#7-repository)
 ---
 
-## 📅 Projektzeitplan
+## 1. Projektzeitplan
 
 | Datum       | Aufgabe (Zusammenfassung)                                        | Bearbeiter | Status |
 |-------------|------------------------------------------------------------------|------------|--------|
@@ -63,12 +79,13 @@ foreach (var game in selectedGames)
 | 14.06.2025  | Autofill API-Key, Merge Vorgang                                  | Luis       | ✅      |
 | 15.06.2025  | Gamedetail Window + Anpassungen in Trending                      | Jonas      | ✅      |
 | 15.06.2025  | UserDataWindow voll funktionsfähig                               | Luis       | ✅      |
-| 16.06.2025  | API-Key manuell eingeben, Input angepasst                        | Jonas      | ✅      |
-| 16.06.2025  | Speicher-/Ladefunktion finalisiert, Bugs gefixt, Merge durchgeführt | Luis       | ✅      |
+| 16.06.2025 | API-Key manuell eingeben, Input angepasst                           | Jonas | ✅      |
+| 16.06.2025 | Speicher-/Ladefunktion finalisiert, Bugs gefixt, Merge durchgeführt | Luis   | ✅      |
+
 
 ---
 
-## 📋 Lastenheft
+## 2. Lastenheft
 
 ### 2.1 Kurzbeschreibung
 
@@ -100,9 +117,9 @@ Auf der **Trending Releases-Page** kann man, mithilfe von einigen Filtern, sich 
 
 ---
 
-## 📑 Pflichtenheft
+## 3. Pflichtenheft
 
-### Programmlogik
+### 3.1 Interner Programmaufbau (Programmlogik)
 
 - **Page 1: Update/Newsletter-Page**  
   Nutzer gibt seine/ihre Steam ID und API Key an. Das Programm zeigt die letzten Updates dieser Spiele.
@@ -112,6 +129,7 @@ Auf der **Trending Releases-Page** kann man, mithilfe von einigen Filtern, sich 
 
 ### Klassenstruktur
 
+![Screenshot Klassendiagramme](Klassendiagramme.png)
 - `Game`: Daten eines einzelnen Spiels speichern
 - `GameCollection`: Verwaltung und Handling mehrerer Spiele
 - `RawgFetchGames`: Statische Klasse zum Abrufen von Spieldaten über die RAWG API
@@ -119,13 +137,13 @@ Auf der **Trending Releases-Page** kann man, mithilfe von einigen Filtern, sich 
 - `RawgGame`: Daten eines Spiels mit allen relevanten Eigenschaften aus der API speichern
 - `RawgRoot`: Repräsentiert die API-Antwort mit der Liste der Spiele
 
-### Umsetzung & Herausforderungen
+### 3.2 Umsetzungsdetails
 
 - Toggle zwischen Pages anfangs fehleranfällig → refactored
 - API-Verbindung mit Try/Catch abgesichert
 - GUI responsiv und übersichtlich halten war wichtig
 
-### Tests & Ergebnisse
+### 3.3 Ergebnisse, Interpretation (Tests)
 
 - **Updates** werden zuverlässig erkannt
 - **Trending-Page** reagiert schnell auf Filter
@@ -134,16 +152,16 @@ Auf der **Trending Releases-Page** kann man, mithilfe von einigen Filtern, sich 
 
 ---
 
-## 📘 Anleitung
+## 4. Anleitung
 
-### Installationsanleitung
+### 4.1 Installationsanleitung
 
 - .NET 6 SDK installieren
 - Repository klonen:  
   `https://github.com/YoshyRias/SteamNewsletter.git`
 - In Visual Studio öffnen, `SteamNewsletter.sln` starten
 
-### Bedienungsanleitung
+### 4.2 Bedienungsanleitung
 
 1. App starten
 2. Sich mit SteamID und API Key anmelden
@@ -155,14 +173,14 @@ Auf der **Trending Releases-Page** kann man, mithilfe von einigen Filtern, sich 
 
 ---
 
-## 🐞 Bekannte Bugs
+## 5. Bekannte Bugs, Probleme
 
 - Trending-Liste lädt gelegentlich langsam 
 - Einzelne Spiele zeigen nicht alle Changelogs korrekt an
 
 ---
 
-## 🚀 Erweiterungsmöglichkeiten
+## 6. Erweiterungsmöglichkeiten
 
 - Integrierte Benachrichtigungen (System oder Discord)
 - Erweiterte Filter (z. B. nach Genres, Bewertungen, ...)
@@ -170,6 +188,6 @@ Auf der **Trending Releases-Page** kann man, mithilfe von einigen Filtern, sich 
 
 ---
 
-## 🔗 Repository
+## 7 Repository
 
 [SteamNewsletter GitHub Repository](https://github.com/YoshyRias/SteamNewsletter.git)
