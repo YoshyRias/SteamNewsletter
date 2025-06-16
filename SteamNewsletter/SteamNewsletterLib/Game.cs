@@ -125,18 +125,26 @@ namespace SteamNewsletterLib
                 foreach (Match match in Regex.Matches(rawContent, "<img[^>]*src=[\"']([^\"']+)[\"'][^>]*>", RegexOptions.IgnoreCase))
                 {
                     string imageUrl = match.Groups[1].Value;
-                    try
+
+                    if (Uri.TryCreate(imageUrl, UriKind.Absolute, out Uri uriResult) &&
+                        (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
                     {
-                        var image = new Image
+                        try
                         {
-                            Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(imageUrl)),
-                            Height = 200,
-                            Margin = new Thickness(0, 0, 0, 5),
-                            Stretch = Stretch.UniformToFill
-                        };
-                        contentStack.Children.Add(image);
+                            var image = new Image
+                            {
+                                Source = new System.Windows.Media.Imaging.BitmapImage(uriResult),
+                                Height = 200,
+                                Margin = new Thickness(0, 0, 0, 5),
+                                Stretch = Stretch.UniformToFill
+                            };
+                            contentStack.Children.Add(image);
+                        }
+                        catch
+                        {
+                            // Skip invalid or unreachable images
+                        }
                     }
-                    catch { /* ignore broken image URLs */ }
                 }
 
                 // Build TextBlock with clickable links
@@ -157,25 +165,58 @@ namespace SteamNewsletterLib
                 {
                     int index = match.Index;
 
-                    // Text before link
+                    // Text before the link
                     string beforeLink = content.Substring(lastIndex, index - lastIndex);
                     textBlock.Inlines.Add(new Run(StripHtml(beforeLink)));
 
-                    // Link
+                    // Extract link
                     string url = match.Groups[1].Value;
                     string linkText = StripHtml(match.Groups[2].Value);
-                    var hyperlink = new Hyperlink(new Run(linkText))
-                    {
-                        NavigateUri = new Uri(url)
-                    };
-                    hyperlink.RequestNavigate += (sender, e) => System.Diagnostics.Process.Start(
-                        new System.Diagnostics.ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
 
-                    textBlock.Inlines.Add(hyperlink);
+                    if (Uri.TryCreate(url, UriKind.Absolute, out Uri linkUri) &&
+                        (linkUri.Scheme == Uri.UriSchemeHttp || linkUri.Scheme == Uri.UriSchemeHttps))
+                    {
+                        var hyperlink = new Hyperlink(new Run(linkText))
+                        {
+                            NavigateUri = linkUri,
+                            Foreground = Brushes.Blue,
+                            TextDecorations = TextDecorations.Underline
+                        };
+
+                        // Safe handling of hyperlink click
+                        hyperlink.RequestNavigate += (sender, e) =>
+                        {
+                            try
+                            {
+                                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(e.Uri.AbsoluteUri)
+                                {
+                                    UseShellExecute = true
+                                });
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Failed to open link: {ex.Message}", "Navigation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+
+                            e.Handled = true;
+                        };
+
+                        textBlock.Inlines.Add(hyperlink);
+                    }
+                    else
+                    {
+                        // If invalid URL, render as plain text
+                        textBlock.Inlines.Add(new Run(linkText));
+                    }
 
                     lastIndex = index + match.Length;
                 }
 
+                // Remaining text after the last link
+                if (lastIndex < content.Length)
+                {
+                    textBlock.Inlines.Add(new Run(StripHtml(content.Substring(lastIndex))));
+                }
                 // Remaining text
                 if (lastIndex < content.Length)
                 {
