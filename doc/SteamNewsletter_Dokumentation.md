@@ -177,6 +177,7 @@ Auf der **Trending Releases-Page** kann man, mithilfe von einigen Filtern, sich 
 
 - Trending-Liste lädt gelegentlich langsam 
 - Einzelne Spiele zeigen nicht alle Changelogs korrekt an
+- Wenn man nur die SteamID eingibt und nicht den Apikey kann man nicht überprüfen ob diese Existiert
 
 ---
 
