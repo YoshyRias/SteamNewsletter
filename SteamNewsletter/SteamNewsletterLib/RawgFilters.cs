@@ -30,9 +30,16 @@ namespace SteamNewsletterLib
             order = "-rating";
             page_size = "40";
             platforms = "4";
-            using (StreamReader sr = new StreamReader("rawg-api-key.txt"))
+            try
             {
-                apiKey = sr.ReadLine();
+                using (StreamReader sr = new StreamReader("rawg-api-key.txt"))
+                {
+                    apiKey = sr.ReadLine();
+                }
+            }
+            catch
+            {
+
             }
         }
 

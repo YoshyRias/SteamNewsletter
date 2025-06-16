@@ -116,14 +116,21 @@ namespace SteamNewsletterLib
 
         public void LoadSteamDataFromFile()
         {
-            using (StreamReader streamReader = new StreamReader(Filepath))
+            try
             {
-                string[] Data = new string[2];
-                string line = streamReader.ReadLine();
+                using (StreamReader streamReader = new StreamReader(Filepath))
+                {
+                    string[] Data = new string[2];
+                    string line = streamReader.ReadLine();
 
 
-                this.Deserialize(line);
-            };
+                    this.Deserialize(line);
+                };
+            }
+            catch
+            {
+
+            }
         }
         public void WriteIntoFile()
         {

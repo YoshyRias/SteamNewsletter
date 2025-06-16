@@ -18,7 +18,7 @@ namespace SteamNewsletter
     /// </summary>
     public partial class MainWindow : Window
     {
-        private int curPage = 1;
+        private int curPage = 0;
 
         private UpdatePage updatePage;
         private NewReleasesPage newReleasesPage;
