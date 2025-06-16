@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,9 +31,10 @@ namespace SteamNewsletter
         public UserDataInput()
         {
             InitializeComponent();
+            
         }
 
-        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
+        private async void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
             if (UserInfoValid.SteamApiKeyValid == true && UserInfoValid.SteamIdValid == true)
             {
@@ -64,18 +63,17 @@ namespace SteamNewsletter
         // ChatGPT: Is there a simple way to check if a Steam id is valid
         public async Task IsSteam_Apikey_ID_Valid()
         {
-            //string SteamTestId = "76561197960435530"; // Steam Test ID
+            string steamId = "76561197960435530"; // Steam Test ID
 
-            
-            string url = $"https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key={SteamApiKey}&steamids={SteamId}";
-            
+            string url = $"https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key={SteamApiKey}&steamids={steamId}";
 
             using HttpClient client = new HttpClient();
             try
             {
                 var response = await client.GetAsync(url);
-                response.EnsureSuccessStatusCode();
+                string result = await client.GetStringAsync(url);
                 string content = await response.Content.ReadAsStringAsync();
+
                 bool steamIdValid = !content.Contains("\"players\":[]");
 
                 UserInfoValid = (true, steamIdValid);
@@ -83,7 +81,7 @@ namespace SteamNewsletter
             }
             catch (HttpRequestException e)
             {
-                UserInfoValid = (false, false);
+               UserInfoValid = (false, false);
             }
 
 
@@ -97,7 +95,6 @@ namespace SteamNewsletter
 
         private async void ApiKeyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SteamApiKey = ApiKeyTextBox.Text;
             await IsSteam_Apikey_ID_Valid();
             if (UserInfoValid.SteamApiKeyValid)
             {
@@ -112,9 +109,6 @@ namespace SteamNewsletter
 
         private async void SteamIDTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SteamId = SteamIDTextBox.Text;
-            await IsSteam_Apikey_ID_Valid();
-
             if (UserInfoValid.SteamIdValid)
             {
 

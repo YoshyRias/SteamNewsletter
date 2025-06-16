@@ -23,11 +23,12 @@ namespace SteamNewsletter
     public partial class UpdatePage : Page
     {
         public GameCollection gameCollection = new GameCollection();
-        public UpdatePage()
+        public  UpdatePage()
         {
             InitializeComponent();
+            gameCollection.LoadSteamDataFromFile();
             ApiKey_SteamId_Inputwindow();
-            //gameCollection.LoadLibaryGames(Games_ListView);
+            gameCollection.LoadLibaryGames();
         }
 
         public class NewsFetcher
@@ -63,6 +64,7 @@ namespace SteamNewsletter
 
         private void ApiKey_SteamId_Inputwindow()
         {
+            string sebas = gameCollection.SteamApiKey;
             UserDataInput userdataInput = new UserDataInput();
             userdataInput.SteamApiKey = gameCollection.SteamApiKey;
             userdataInput.SteamId = gameCollection.SteamId;
@@ -77,6 +79,11 @@ namespace SteamNewsletter
         private void ChangeUserInput_Click(object sender, RoutedEventArgs e)
         {
             ApiKey_SteamId_Inputwindow();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

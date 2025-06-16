@@ -16,6 +16,8 @@ namespace SteamNewsletterLib
     public class GameCollection
     {
 
+        public static string Filepath = "SteamUserInfo.txt";
+
         public List<List<Game>> GameCollectionsList = new List<List<Game>>();
 
         public List<Game> LibaryGames = new List<Game>();
@@ -32,11 +34,12 @@ namespace SteamNewsletterLib
         // ChatGPT(Prompt): Was ist ein SteamApiKey
         // ChaGPT(Prompt): Was macht das: (string[] args)
 
-        public GameCollection() 
+        public GameCollection()
         {
+
             GameCollectionsList.Add(LibaryGames);
             LoadLibaryGames();
-            
+
         }
 
         public async Task LoadLibaryGames()
@@ -65,11 +68,7 @@ namespace SteamNewsletterLib
                         GameDataList.Add(GameData);
                         LibaryGames.Add(new Game(int.Parse(game["appid"].ToString()), game["name"].ToString()));
                     }
-                    
-                }
-                else
-                {
-                    Console.WriteLine("No games found or the profile is private.");
+
                 }
 
             }
@@ -96,6 +95,50 @@ namespace SteamNewsletterLib
                 listveiw.Items.Add(game.Name);
             }
         }
+        public void Deserialize(string Data)
+        {
+            string[] SplitedData = Data.Split(",");
+            try {
+                SteamApiKey = SplitedData[0];
+                SteamId = SplitedData[1];
+            }
+            catch
+            {
+                
+            }
+        }
+
+        public string Serialize()
+        {
+            string Data = $"{SteamApiKey},{SteamId}" ;
+            return Data;
+        }
+
+        public void LoadSteamDataFromFile()
+        {
+            using (StreamReader streamReader = new StreamReader(Filepath))
+            {
+                string[] Data = new string[2];
+                string line = streamReader.ReadLine();
+
+
+                this.Deserialize(line);
+            };
+        }
+        public void WriteIntoFile()
+        {
+            string SerializedData = this.Serialize();
+            
+           
+            using(StreamWriter  streamWriter = new StreamWriter(Filepath))
+            {
+                
+                    streamWriter.WriteLine(SerializedData);
+                
+            }
+        }
+
+
         
 
 

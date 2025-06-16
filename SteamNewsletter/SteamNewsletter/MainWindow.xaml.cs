@@ -33,6 +33,7 @@ namespace SteamNewsletter
             {
                 updatePage = new UpdatePage();
                 MainFrame.Navigate(updatePage);
+                
             }
 
             else if (curPage == 1)
@@ -46,6 +47,7 @@ namespace SteamNewsletter
         {
             if (curPage == 1 && !newReleasesPage.isRunning)
             {
+
                 updatePage = new UpdatePage();
                 MainFrame.Navigate(updatePage);
                 curPage = 0;
@@ -53,9 +55,11 @@ namespace SteamNewsletter
 
             else if (curPage == 0)
             {
+                updatePage.gameCollection.WriteIntoFile();
                 newReleasesPage = new NewReleasesPage();
                 MainFrame.Navigate(newReleasesPage);
                 curPage++;
+                
             }
         }
     }
