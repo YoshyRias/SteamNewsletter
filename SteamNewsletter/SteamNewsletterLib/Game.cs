@@ -1,9 +1,11 @@
-
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace SteamNewsletterLib
 {
@@ -45,7 +47,7 @@ namespace SteamNewsletterLib
         [JsonPropertyName("tags")]
         public List<string> Tags { get; set; }
 
-        public List<string> RecentUpdates = new List<string>();
+        public List<JToken> RecentUpdates { get; set; } = new List<JToken>();
 
         public Game(int appID)
         {
@@ -68,38 +70,161 @@ namespace SteamNewsletterLib
 
         public async Task GetGameUpdates()
         {
-            string url = $"https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid={AppId}&count=1";
+            string url = $"https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid={AppId}&count=10";
 
             using (HttpClient client = new HttpClient())
             {
-
-
                 var response = await client.GetStringAsync(url);
                 JObject json = JObject.Parse(response);
 
-                JToken newsItems = json["appnews"]?["newsitems"];
-                if (newsItems != null)
-                {
-                    foreach (JToken item in newsItems)
-                    {
-                        string title = item["title"]?.ToString();
-                        string contents = item["contents"]?.ToString();
-
-                        //string link = item["url"]?.ToString();
-
-                        RecentUpdates.Add($"Title: {Regex.Replace(title, "<.*?>", string.Empty)}\n{Regex.Replace(contents, "<.*?>", string.Empty)}\n");
-                    }
-                }
+                RecentUpdates = json["appnews"]?["newsitems"]?.ToList() ?? new List<JToken>();
             }
-            
+
 
         }
 
-        public async Task VisuallizeUpdates(Label UpdateTitle)
+        // ChatGPT: Can you visuallize the jason data fromt the api and clean it
+        // ChatGPT: How can I make the links work
+        // ChatGPT: How do i render the images
+
+        public async Task VisuallizeUpdates(StackPanel panel)
         {
             await GetGameUpdates();
-            UpdateTitle.Content = RecentUpdates[0];
+            panel.Children.Clear();
 
+            foreach (var news in RecentUpdates)
+            {
+                string title = news["title"]?.ToString();
+                string rawContent = news["contents"]?.ToString() ?? "";
+
+                long unixTime = long.Parse(news["date"]?.ToString() ?? "0");
+                DateTime date = DateTimeOffset.FromUnixTimeSeconds(unixTime).DateTime;
+
+                // Create base stack
+                var contentStack = new StackPanel();
+
+                // Title
+                contentStack.Children.Add(new TextBlock
+                {
+                    Text = title,
+                    FontSize = 16,
+                    FontWeight = FontWeights.Bold,
+                    Margin = new Thickness(0, 0, 0, 5)
+                });
+
+                // Date
+                contentStack.Children.Add(new TextBlock
+                {
+                    Text = date.ToString("dd.MM.yyyy HH:mm"),
+                    FontSize = 12,
+                    Foreground = Brushes.Gray,
+                    Margin = new Thickness(0, 0, 0, 5)
+                });
+
+                // Extract <img src="..."> and add images
+                foreach (Match match in Regex.Matches(rawContent, "<img[^>]*src=[\"']([^\"']+)[\"'][^>]*>", RegexOptions.IgnoreCase))
+                {
+                    string imageUrl = match.Groups[1].Value;
+                    try
+                    {
+                        var image = new Image
+                        {
+                            Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(imageUrl)),
+                            Height = 200,
+                            Margin = new Thickness(0, 0, 0, 5),
+                            Stretch = Stretch.UniformToFill
+                        };
+                        contentStack.Children.Add(image);
+                    }
+                    catch { /* ignore broken image URLs */ }
+                }
+
+                // Build TextBlock with clickable links
+                var textBlock = new TextBlock
+                {
+                    TextWrapping = TextWrapping.Wrap,
+                    FontSize = 14
+                };
+
+                string content = System.Net.WebUtility.HtmlDecode(rawContent);
+                content = Regex.Replace(content, "<img[^>]+>", ""); // remove images
+                content = ConvertBBCodeLinks(content);              // convert BBCode to <a> format
+
+                string pattern = @"<a href=[""'](.*?)[""']>(.*?)<\/a>";
+                int lastIndex = 0;
+
+                foreach (Match match in Regex.Matches(content, pattern))
+                {
+                    int index = match.Index;
+
+                    // Text before link
+                    string beforeLink = content.Substring(lastIndex, index - lastIndex);
+                    textBlock.Inlines.Add(new Run(StripHtml(beforeLink)));
+
+                    // Link
+                    string url = match.Groups[1].Value;
+                    string linkText = StripHtml(match.Groups[2].Value);
+                    var hyperlink = new Hyperlink(new Run(linkText))
+                    {
+                        NavigateUri = new Uri(url)
+                    };
+                    hyperlink.RequestNavigate += (sender, e) => System.Diagnostics.Process.Start(
+                        new System.Diagnostics.ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
+
+                    textBlock.Inlines.Add(hyperlink);
+
+                    lastIndex = index + match.Length;
+                }
+
+                // Remaining text
+                if (lastIndex < content.Length)
+                {
+                    textBlock.Inlines.Add(new Run(StripHtml(content.Substring(lastIndex))));
+                }
+
+                contentStack.Children.Add(textBlock);
+
+                var border = new Border
+                {
+                    BorderBrush = Brushes.LightGray,
+                    BorderThickness = new Thickness(1),
+                    CornerRadius = new CornerRadius(5),
+                    Background = Brushes.WhiteSmoke,
+                    Margin = new Thickness(5),
+                    Padding = new Thickness(10),
+                    Child = contentStack
+                };
+
+                panel.Children.Add(border);
+            }
+        }
+
+        private string StripHtml(string input)
+        {
+            return Regex.Replace(input, "<.*?>", string.Empty);
+        }
+
+        private string ConvertBBCodeLinks(string input)
+        {
+            // Converts [url=https://...]Text[/url] ? <a href="https://...">Text</a>
+            return Regex.Replace(input, @"\[url=(.*?)\](.*?)\[/url\]", "<a href=\"$1\">$2</a>", RegexOptions.IgnoreCase);
+        }
+
+        private string CleanContent(string content)
+        {
+            // Remove HTML tags
+            content = Regex.Replace(content, "<.*?>", string.Empty);
+
+            // Convert BBCode links to normal URLs
+            content = Regex.Replace(content, @"\[url=(.*?)\](.*?)\[/url\]", "$2 ($1)", RegexOptions.IgnoreCase);
+
+            // Remove remaining BBCode tags (like [b], [i])
+            content = Regex.Replace(content, @"\[(.*?)\]", string.Empty);
+
+            // Optionally decode HTML entities (like &amp;)
+            content = System.Net.WebUtility.HtmlDecode(content);
+
+            return content.Trim();
         }
 
 

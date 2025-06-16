@@ -59,7 +59,7 @@ namespace SteamNewsletter
         private async void Games_ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = Games_ListView.SelectedIndex;
-            await gameCollection.GameCollectionsList[0][index].VisuallizeUpdates(UpdateTitle);
+            await gameCollection.GameCollectionsList[0][index].VisuallizeUpdates(UpdateNewsPanel);
         }
 
         private void ApiKey_SteamId_Inputwindow()

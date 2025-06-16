@@ -63,9 +63,7 @@ namespace SteamNewsletter
         // ChatGPT: Is there a simple way to check if a Steam id is valid
         public async Task IsSteam_Apikey_ID_Valid()
         {
-            string steamId = "76561197960435530"; // Steam Test ID
-
-            string url = $"https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key={SteamApiKey}&steamids={steamId}";
+            string url = $"https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/?key={SteamApiKey}&steamids={SteamId}";
 
             using HttpClient client = new HttpClient();
             try
