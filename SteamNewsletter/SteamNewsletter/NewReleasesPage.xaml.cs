@@ -128,26 +128,6 @@ namespace SteamNewsletter
             LoadGames();
         }
 
-        private void SliderGameCount_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            double gameCount = SliderGameCount.Value;
-            LabelGameCount.Content = gameCount;
-            if (gameCount <= 40)
-            {
-                rawgFilters.page_size = gameCount.ToString();
-                rawgFilters.pages = "1";
-            }
-
-            else
-            {
-                double pages = Math.Ceiling(gameCount / 40);
-                double page_size = gameCount / pages;
-                rawgFilters.page_size = page_size.ToString();
-                rawgFilters.pages = pages.ToString();
-            }
-
-        }
-
         private void ListViewReleases_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             RawgGame selectedGame = ListViewReleases.SelectedItem as RawgGame;

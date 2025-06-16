@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,6 @@ namespace SteamNewsletterLib
         public string curDateEndString { get; set;}
         public string order { get; set; } 
         public string page_size { get; set; } 
-        public string pages {  get; set; }
         public string platforms { get; set; } 
         public string apiKey { get; set; } 
 
@@ -29,15 +29,17 @@ namespace SteamNewsletterLib
 
             order = "-rating";
             page_size = "40";
-            pages = "1";
             platforms = "4";
-            apiKey = "fdf840e885aa4fbb9aecd6b45d152b5a";
+            using (StreamReader sr = new StreamReader("rawg-api-key.txt"))
+            {
+                apiKey = sr.ReadLine();
+            }
         }
 
 
         public override string ToString()
         {
-            return $"Filter Debug: {page_size} {pages} {platforms} {curDateStartString} {curDateEndString}";
+            return $"Filter Debug: {page_size} {platforms} {curDateStartString} {curDateEndString}";
         }
     }
 }

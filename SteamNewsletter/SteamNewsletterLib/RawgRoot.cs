@@ -30,6 +30,5 @@ namespace SteamNewsletterLib
         {
             listView.ItemsSource = Results;
         }
-
     }
 }
