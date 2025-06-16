@@ -1,7 +1,24 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\jnsma\\OneDrive\\Dokumente\\_Git\\test\\SteamNewsletter\\src\\SteamNewsletter\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{53993585-6C13-45E8-9407-6384321F7372}|SteamNewsletter\\SteamNewsletter.csproj|c:\\users\\jnsma\\onedrive\\dokumente\\_git\\test\\steamnewsletter\\src\\steamnewsletter\\steamnewsletter\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{53993585-6C13-45E8-9407-6384321F7372}|SteamNewsletter\\SteamNewsletter.csproj|solutionrelative:steamnewsletter\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{53993585-6C13-45E8-9407-6384321F7372}|SteamNewsletter\\SteamNewsletter.csproj|c:\\users\\jnsma\\onedrive\\dokumente\\_git\\test\\steamnewsletter\\src\\steamnewsletter\\steamnewsletter\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{53993585-6C13-45E8-9407-6384321F7372}|SteamNewsletter\\SteamNewsletter.csproj|solutionrelative:steamnewsletter\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{53993585-6C13-45E8-9407-6384321F7372}|SteamNewsletter\\SteamNewsletter.csproj|c:\\users\\jnsma\\onedrive\\dokumente\\_git\\test\\steamnewsletter\\src\\steamnewsletter\\steamnewsletter\\newreleasespage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{53993585-6C13-45E8-9407-6384321F7372}|SteamNewsletter\\SteamNewsletter.csproj|solutionrelative:steamnewsletter\\newreleasespage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{53993585-6C13-45E8-9407-6384321F7372}|SteamNewsletter\\SteamNewsletter.csproj|c:\\users\\jnsma\\onedrive\\dokumente\\_git\\test\\steamnewsletter\\src\\steamnewsletter\\steamnewsletter\\newreleasespage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{53993585-6C13-45E8-9407-6384321F7372}|SteamNewsletter\\SteamNewsletter.csproj|solutionrelative:steamnewsletter\\newreleasespage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -18,6 +35,56 @@
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\jnsma\\OneDrive\\Dokumente\\_Git\\test\\SteamNewsletter\\src\\SteamNewsletter\\SteamNewsletter\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "SteamNewsletter\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\jnsma\\OneDrive\\Dokumente\\_Git\\test\\SteamNewsletter\\src\\SteamNewsletter\\SteamNewsletter\\MainWindow.xaml*",
+              "RelativeToolTip": "SteamNewsletter\\MainWindow.xaml*",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-06-16T18:46:27.827Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\jnsma\\OneDrive\\Dokumente\\_Git\\test\\SteamNewsletter\\src\\SteamNewsletter\\SteamNewsletter\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "SteamNewsletter\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\jnsma\\OneDrive\\Dokumente\\_Git\\test\\SteamNewsletter\\src\\SteamNewsletter\\SteamNewsletter\\MainWindow.xaml.cs",
+              "RelativeToolTip": "SteamNewsletter\\MainWindow.xaml.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAswC8AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-16T18:44:51.899Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "NewReleasesPage.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\jnsma\\OneDrive\\Dokumente\\_Git\\test\\SteamNewsletter\\src\\SteamNewsletter\\SteamNewsletter\\NewReleasesPage.xaml.cs",
+              "RelativeDocumentMoniker": "SteamNewsletter\\NewReleasesPage.xaml.cs",
+              "ToolTip": "C:\\Users\\jnsma\\OneDrive\\Dokumente\\_Git\\test\\SteamNewsletter\\src\\SteamNewsletter\\SteamNewsletter\\NewReleasesPage.xaml.cs",
+              "RelativeToolTip": "SteamNewsletter\\NewReleasesPage.xaml.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAACUAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-16T18:44:34.277Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "NewReleasesPage.xaml",
+              "DocumentMoniker": "C:\\Users\\jnsma\\OneDrive\\Dokumente\\_Git\\test\\SteamNewsletter\\src\\SteamNewsletter\\SteamNewsletter\\NewReleasesPage.xaml",
+              "RelativeDocumentMoniker": "SteamNewsletter\\NewReleasesPage.xaml",
+              "ToolTip": "C:\\Users\\jnsma\\OneDrive\\Dokumente\\_Git\\test\\SteamNewsletter\\src\\SteamNewsletter\\SteamNewsletter\\NewReleasesPage.xaml",
+              "RelativeToolTip": "SteamNewsletter\\NewReleasesPage.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-06-16T18:44:29.892Z",
+              "EditorCaption": ""
             }
           ]
         }

@@ -29,13 +29,14 @@ namespace SteamNewsletter
 
             if (curPage == 0)
             {
+                ButtonMode.Content = "Trending - Page";
                 updatePage = new UpdatePage();
-                MainFrame.Navigate(updatePage);
-                
+                MainFrame.Navigate(updatePage);   
             }
 
             else if (curPage == 1)
             {
+                ButtonMode.Content = "Update/Newsletter - Page";
                 newReleasesPage = new NewReleasesPage();
                 MainFrame.Navigate(newReleasesPage);
             }
@@ -45,7 +46,7 @@ namespace SteamNewsletter
         {
             if (curPage == 1 && !newReleasesPage.isRunning)
             {
-
+                ButtonMode.Content = "Trending - Page";
                 updatePage = new UpdatePage();
                 MainFrame.Navigate(updatePage);
                 curPage = 0;
@@ -53,6 +54,7 @@ namespace SteamNewsletter
 
             else if (curPage == 0)
             {
+                ButtonMode.Content = "Update/Newsletter - Page";
                 updatePage.gameCollection.WriteIntoFile();
                 newReleasesPage = new NewReleasesPage();
                 MainFrame.Navigate(newReleasesPage);

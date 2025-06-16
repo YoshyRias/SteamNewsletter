@@ -13,7 +13,7 @@
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
         
-        <Button x:Name="ButtonMode" Grid.Column="0" Grid.Row="0" Content="Toggle" Width="100" Click="ButtonMode_Click"/>
+        <Button x:Name="ButtonMode" Grid.Column="0" Grid.Row="0" Content="Toggle" Width="200" Click="ButtonMode_Click"/>
         <Frame Grid.Column="0" Grid.Row="1" x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>
