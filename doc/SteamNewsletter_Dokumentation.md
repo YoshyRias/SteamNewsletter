@@ -183,10 +183,17 @@ Auf der **Trending Releases-Page** kann man, mithilfe von einigen Filtern, sich 
 
 ### 4.1 Installationsanleitung
 
-- .NET 6 SDK installieren
-- Repository klonen:  
-  `https://github.com/YoshyRias/SteamNewsletter.git`
-- In Visual Studio öffnen, `SteamNewsletter.sln` starten
+#### ▶ Nur ausführen (ohne Visual Studio)
+1. Öffne den Ordner `bin/`.
+2. Doppelklicke auf `SteamNewsletter.exe`.
+3. Falls das Programm nicht startet, installiere bitte die [.NET 6 Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/6.0).
+
+#### ▶ Projekt öffnen und bearbeiten
+1. Stelle sicher, dass das [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) installiert ist.
+2. Öffne den Ordner `src/`.
+3. Öffne `SteamNewsletter.sln` mit Visual Studio (Version 2022 oder neuer empfohlen).
+4. Drücke `F5`, um das Programm zu starten.
+
 
 ### 4.2 Bedienungsanleitung
 
@@ -204,7 +211,7 @@ Auf der **Trending Releases-Page** kann man, mithilfe von einigen Filtern, sich 
 
 - Trending-Liste lädt gelegentlich langsam 
 - Einzelne Spiele zeigen nicht alle Changelogs korrekt an
-
+- Wenn man nur die SteamID eingibt, wird diese als falsch angezeigt, da man die Richtigkeit nur überprüfen kann, wenn man eine SteamApiKey hat
 ---
 
 ## 6. Erweiterungsmöglichkeiten
