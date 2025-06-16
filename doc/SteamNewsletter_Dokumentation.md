@@ -19,23 +19,50 @@ Die App nutzt die Steam Web API & die RAWG API.
 ---
 
 ## 📷 Collage (Screenshots)
+![alt text](<Collage 1.png>)
 
-*(Hier zwei Screenshots einfügen – z. B. von der Update-Seite und der Trending-Page)*
 
+![alt text](<Collage 2.png>)
+
+
+![alt text](<Collage 3.png>)
+
+
+![alt text](<Collage 4.png>) 
+
+
+![alt text](<Collage 5.png>)   
 ---
 
 ## 📦 Relevanter Codeausschnitt
 
 ```csharp
-foreach (var game in selectedGames)
-{
-    var updates = steamAPI.GetUpdates(game.Id);
-    if (updates.HasNew)
-    {
-        NotifyUser(updates);
-        DisplayUpdateDetails(updates);
-    }
-}
+public async Task LoadLibaryGames()
+ {
+
+     string url = $"https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key={SteamApiKey}&steamid={SteamId}&include_appinfo=true&include_played_free_games=true";
+
+     using (HttpClient client = new HttpClient())
+     {
+         HttpResponseMessage response = await client.GetAsync(url);
+         string json = await response.Content.ReadAsStringAsync();
+
+         JObject data = JObject.Parse(json);
+         var games = data["response"]?["games"];
+
+         List<string> GameDataList = new List<string>();
+
+         if (games != null)
+         {
+             foreach (JObject game in games)
+             {
+                 string GameData = ($"{game["name"]},{game["appid"]},{game["playtime_forever"]}");
+                 GameDataList.Add(GameData);
+                 LibaryGames.Add(new Game(int.Parse(game["appid"].ToString()), game["name"].ToString()));
+             }
+         }
+     }
+ }
 ```
 ## Inhaltsverzeichnis
 
@@ -79,7 +106,7 @@ foreach (var game in selectedGames)
 | 14.06.2025  | Autofill API-Key, Merge Vorgang                                  | Luis       | ✅      |
 | 15.06.2025  | Gamedetail Window + Anpassungen in Trending                      | Jonas      | ✅      |
 | 15.06.2025  | UserDataWindow voll funktionsfähig                               | Luis       | ✅      |
-| 16.06.2025 | API-Key manuell eingeben, Input angepasst                           | Jonas | ✅      |
+| 16.06.2025 | API-Key manuell eingeben, Input angepasst, Toggle Button fixed :D | Jonas | ✅      |
 | 16.06.2025 | Speicher-/Ladefunktion finalisiert, Bugs gefixt, Merge durchgeführt | Luis   | ✅      |
 
 
@@ -177,7 +204,6 @@ Auf der **Trending Releases-Page** kann man, mithilfe von einigen Filtern, sich 
 
 - Trending-Liste lädt gelegentlich langsam 
 - Einzelne Spiele zeigen nicht alle Changelogs korrekt an
-- Wenn man nur die SteamID eingibt und nicht den Apikey kann man nicht überprüfen ob diese Existiert
 
 ---
 
