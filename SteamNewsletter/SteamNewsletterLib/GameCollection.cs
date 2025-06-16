@@ -129,7 +129,7 @@ namespace SteamNewsletterLib
             }
             catch
             {
-
+                
             }
         }
         public void WriteIntoFile()

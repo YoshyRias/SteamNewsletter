@@ -31,7 +31,7 @@ namespace SteamNewsletter
         public UserDataInput()
         {
             InitializeComponent();
-            
+
         }
 
         private async void ConfirmButton_Click(object sender, RoutedEventArgs e)
@@ -86,7 +86,7 @@ namespace SteamNewsletter
 
 
         }
-
+        
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ApiKeyTextBox.Text = SteamApiKey;
@@ -95,8 +95,9 @@ namespace SteamNewsletter
 
         private async void ApiKeyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            SteamApiKey = ApiKeyTextBox.Text;
             await IsSteam_Apikey_ID_Valid();
-            if (UserInfoValid.SteamApiKeyValid)
+            if (UserInfoValid.SteamApiKeyValid== true)
             {
                 ApiKeyTextBox.Background = Brushes.DarkSeaGreen;
             }
@@ -104,12 +105,7 @@ namespace SteamNewsletter
             {
                 ApiKeyTextBox.Background = Brushes.IndianRed;
             }
-
-        }
-
-        private async void SteamIDTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (UserInfoValid.SteamIdValid)
+            if (UserInfoValid.SteamIdValid == true)
             {
 
                 SteamIDTextBox.Background = Brushes.DarkSeaGreen;
@@ -118,6 +114,32 @@ namespace SteamNewsletter
             {
                 SteamIDTextBox.Background = Brushes.IndianRed;
             }
+
         }
+
+        private async void SteamIDTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SteamId = SteamIDTextBox.Text;
+            await IsSteam_Apikey_ID_Valid();
+            if (UserInfoValid.SteamIdValid == true)
+            {
+
+                SteamIDTextBox.Background = Brushes.DarkSeaGreen;
+            }
+            else
+            {
+                SteamIDTextBox.Background = Brushes.IndianRed;
+            }
+            if (UserInfoValid.SteamApiKeyValid == true)
+            {
+                ApiKeyTextBox.Background = Brushes.DarkSeaGreen;
+            }
+            else
+            {
+                ApiKeyTextBox.Background = Brushes.IndianRed;
+            }
+        }
+
+       
     }
 }
