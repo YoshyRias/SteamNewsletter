@@ -37,6 +37,13 @@ namespace SteamNewsletter
             InitializeComponent();
             isRunning = true;
 
+            RawgAPIInputWindow window = new RawgAPIInputWindow();
+            window.ShowDialog();
+            if (window.DialogResult == true)
+            {
+                rawgFilters.apiKey = window.Key;
+            }
+
             // ChatGPT Prompt: short way to make it the first day of cur month
             DateTime now = DateTime.Now;
             DatePickerStart.SelectedDate = new DateTime(now.Year, now.Month, 1);
@@ -53,7 +60,6 @@ namespace SteamNewsletter
             Log.Logger.Debug("Loaded App succesfully");
             LoadGames();
         }
-
 
         private async void LoadGames()
         {

@@ -10,6 +10,9 @@
     <Compile Update="GameDetailWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="RawgAPIInputWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UpdatePage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -22,6 +25,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="RawgAPIInputWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UpdatePage.xaml">
